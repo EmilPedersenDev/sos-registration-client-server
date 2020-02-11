@@ -1,0 +1,133 @@
+.st-card {
+  //max-width: 100%;
+  &.lg {
+    padding: 12px;
+    border-radius: 6px;
+    background-color: #ffffff;
+    box-shadow: 0 16px 24px 0 rgba(43, 36, 29, 0.08);
+  }
+
+  &.md {
+    padding: 4px 6px;
+    border-radius: 2px;
+    background-color: #f9f8f5;
+  }
+
+  &.xs {
+    padding: 32px;
+    border-radius: 16px;
+    background-color: #f9f8f5;
+  }
+
+  &.loading {
+    position: relative;
+  }
+
+  .footer {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin: 28px -12px -28px -12px;
+    padding: 12px 16px;
+    background-color: #f9f8f5;
+    display: flex;
+
+    .st-form-group {
+      margin-top: 0px;
+    }
+
+    button {
+      margin-top: 0px;
+    }
+
+    > :not(:last-child) {
+      margin-right: 8px;
+    }
+
+    > :not(:first-child) {
+      margin-left: 8px;
+    }
+  }
+
+  @media (min-width: 700px) {
+    .footer {
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      margin: 48px -48px -48px -48px;
+      padding: 48px;
+      flex-wrap: nowrap;
+    }
+  }
+
+  #loading-screen {
+    position: absolute;
+    height: calc(100% - 12px);
+    width: 100%;
+    margin: 0px -12px 12px -12px;
+    background-color: #fff;
+    border-radius: 6px;
+    z-index: 2;
+
+    .message {
+      position: relative;
+      top: 60%;
+      text-align: center;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    &.lg {
+      padding: 32px 48px;
+      // border-radius: 24px;
+      border-radius: 8px;
+    }
+
+    &.md {
+      padding: 16px 24px;
+      border-radius: 8px;
+      background-color: #f9f8f5;
+    }
+
+    #loading-screen {
+      height: calc(100% - 48px);
+      margin: 0px -48px 48px -48px;
+      border-radius: 24px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    &.xs-width {
+      max-width: 376px;
+    }
+
+    &.sm-width {
+      max-width: 540px;
+    }
+
+    &.md-width {
+      max-width: 576px;
+    }
+
+    &.lg-width {
+      max-width: 776px;
+    }
+    &.mega-width {
+      max-width: 1412px;
+    }
+  }
+
+  &.lg-width {
+    #loading-screen {
+      margin: 0px;
+      height: 100%;
+    }
+  }
+}
