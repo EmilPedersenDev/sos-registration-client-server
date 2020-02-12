@@ -1,6 +1,11 @@
 <template>
   <div class="Users">
     <h1>SoS Registration</h1>
+    <div class="row justify-content-center">
+      <div class="col-4 search-wrapper">
+        <st-input placeholder="Search" v-model="search"></st-input>
+      </div>
+    </div>
     <div v-if="users.length > 0" class="table-wrap">
       <div>
         <router-link :to="{ name: 'RegisterPosition' }" class>{{LinkText}}</router-link>
@@ -13,7 +18,7 @@
           <td>Message</td>
           <td align="center">Edit</td>
         </tr>
-        <tr v-for="user in users" :key="user._id" :class="{'current-user': isCurrentUser(user._id)}">
+        <tr v-for="user in filteredUsers" :key="user._id" :class="{'current-user': isCurrentUser(user._id)}">
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td>
@@ -46,7 +51,8 @@
     data() {
       return {
         users: [],
-        userId: null
+        userId: null,
+        search: ""
       };
     },
     created() {
@@ -61,6 +67,25 @@
         } else {
           return "Add your location";
         }
+      },
+      filteredUsers() {
+        if (!this.search) return this.users;
+
+        let usersFilterArr = this.users;
+
+        usersFilterArr = usersFilterArr.filter(val => {
+          for (let key in val) {
+            if (
+              val[key]
+                .toString()
+                .toLowerCase()
+                .indexOf(this.search.toString().toLowerCase()) > -1
+            ) {
+              return val;
+            }
+          }
+        });
+        return usersFilterArr;
       }
     },
     methods: {
@@ -71,6 +96,25 @@
             this.users = result.data.users;
           });
       },
+      // filteredUsers(searchInput) {
+      //   if (!searchInput) return;
+
+      //   this.users = this.users.filter(val => {
+      //     for (var key in val) {
+      //       if (
+      //         val[key]
+      //           .toString()
+      //           .toLowerCase()
+      //           .indexOf(searchInput.toString().toLowerCase()) > -1
+      //       ) {
+      //         console.log(val);
+
+      //         return val;
+      //       }
+      //     }
+      //   });
+      //   console.log(searchInput);
+      // },
       isCurrentUser(id) {
         if (!id) return false;
         if (!this.auth) return false;
