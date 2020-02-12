@@ -16,6 +16,11 @@
     components: {
       AppNavigation
     },
+    created() {
+      if (this.authenticated) {
+        this.$store.dispatch("setUser");
+      }
+    },
     computed: {
       ...mapGetters(["authenticated"])
     },

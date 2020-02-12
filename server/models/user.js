@@ -15,6 +15,15 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, "Please Include your password"]
   },
+  comment: {
+    type: String
+  },
+  lat: {
+    type: Number
+  },
+  long: {
+    type: Number
+  },
   tokens: [
     {
       token: {

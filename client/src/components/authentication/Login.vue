@@ -2,36 +2,17 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
-        <form
-          class="text-center border border-primary p-5"
-          style="margin-top:70px;height:auto;padding-top:100px !important;"
-          @submit.prevent="loginUser"
-        >
-          <input
-            type="text"
-            id="email"
-            class="form-control mb-5"
-            placeholder="Email"
-            v-model="login.email"
-          />
+        <form class="text-center border border-primary p-5" style="margin-top:70px;height:auto;padding-top:100px !important;" @submit.prevent="loginUser">
+          <input type="text" id="email" class="form-control mb-5" placeholder="Email" v-model="login.email" />
           <!-- Password -->
-          <input
-            type="password"
-            id="password"
-            class="form-control mb-5"
-            placeholder="Password"
-            v-model="login.password"
-          />
+          <input type="password" id="password" class="form-control mb-5" placeholder="Password" v-model="login.password" />
           <p>
             Dont have an account??
             <router-link to="/register">click here</router-link>
           </p>
           <!-- Sign in button -->
           <center>
-            <button
-              class="btn btn-primary btn-block w-75 my-4"
-              type="submit"
-            >Sign in</button>
+            <button class="btn btn-primary btn-block w-75 my-4" type="submit">Sign in</button>
           </center>
         </form>
       </div>
@@ -41,6 +22,7 @@
 <script>
   import Api from "../../services/Api";
   import sweetAlert from "sweetalert";
+  import { mapActions } from "vuex";
   export default {
     data() {
       return {
@@ -51,6 +33,7 @@
       };
     },
     methods: {
+      ...mapActions({ user: "setUser" }),
       async loginUser() {
         try {
           let response = await Api().post("/user/login", this.login);
@@ -60,7 +43,14 @@
           if (token) {
             swal("Success", "Login Successful", "success");
             this.$store.commit("setToken", token);
-            this.$router.push("/posts");
+
+            this.user()
+              .then(result => {
+                this.$router.push("/users");
+              })
+              .catch(error => {
+                console.error(error);
+              });
           }
         } catch (err) {
           swal("Error", "Something Went Wrong", "error");

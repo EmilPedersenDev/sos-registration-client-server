@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Posts from "@/components/Posts.vue";
-import NewPost from "@/components/NewPost";
+import Users from "@/components/Users.vue";
+import RegisterPosition from "@/components/RegisterPosition";
 import EditPost from "@/components/EditPost";
 import Login from "@/components/authentication/Login";
 import Register from "@/components/authentication/Register";
@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 
 const ifNotAuthenticated = (to, from, next) => {
   if (localStorage.getItem("jwt")) {
-    next({ path: "/posts" });
+    next({ path: "/users" });
     return;
   }
   next();
@@ -30,17 +30,17 @@ const routes = [
     component: Register
   },
   {
-    path: "/posts",
-    name: "Posts",
-    component: Posts,
+    path: "/users",
+    name: "Users",
+    component: Users,
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: "/posts/new",
-    name: "NewPost",
-    component: NewPost,
+    path: "/users/add-position",
+    name: "RegisterPosition",
+    component: RegisterPosition,
     meta: {
       requiresAuth: true
     }

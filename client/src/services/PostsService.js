@@ -5,7 +5,6 @@ export default {
     return Api().get("posts");
   },
   addPost(params) {
-    debugger;
     return Api().post("posts", params);
   },
   updatePost(params) {

@@ -28,6 +28,7 @@
         } else {
           await localStorage.removeItem("jwt");
           this.$store.commit("setToken");
+          this.$store.commit("setUser");
           this.close(true);
         }
       }

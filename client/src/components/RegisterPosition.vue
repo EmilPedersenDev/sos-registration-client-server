@@ -1,6 +1,6 @@
 <template>
   <div class="register-position">
-    <h1>Add Your Position</h1>
+    <h1>{{HeaderText}}</h1>
     <div class="container">
       <div class="account-info">
         <div class="row justify-content-center">
@@ -39,7 +39,7 @@
       <div class="submit">
         <div class="row justify-content-center">
           <div class="col-12 col-sm-6">
-            <sos-button primary large class="app_post_btn" @click="addPost">Add</sos-button>
+            <sos-button primary large class="app_post_btn" @click="submit">Add</sos-button>
           </div>
         </div>
       </div>
@@ -50,42 +50,71 @@
 <script>
   import PostsService from "@/services/PostsService";
   import VueJwtDecode from "vue-jwt-decode";
+  import Api from "../services/Api";
+
   import { mapGetters } from "vuex";
   export default {
-    name: "new-post",
+    name: "register-position",
     data() {
       return {
         newPersonModel: {
+          _id: null,
           name: "",
           email: "",
           comment: "",
           lat: null,
           long: null
-        },
-
-        showPosition: false
-        // title: "",
-        // description: "" hehe heheoikln
+        }
       };
     },
     mounted() {
-      if (this.authenticated) {
+      if (this.auth) {
         this.setNewPersonModel();
       }
     },
     computed: {
-      ...mapGetters(["authenticated"])
+      ...mapGetters({ auth: "authenticated", user: "getUser" }),
+      showPosition() {
+        if (!this.user) return false;
+        return this.newPersonModel.lat || this.newPersonModel.long ? true : false;
+      },
+      HeaderText() {
+        if (!this.user.lat || !this.user.long) {
+          return "Add your location";
+        } else {
+          return "Update your location";
+        }
+      }
+    },
+    watch: {
+      user(val) {
+        if (val) {
+          this.setNewPersonModel();
+        }
+      }
     },
     methods: {
-      async addPost() {
-        await PostsService.addPost(this.newPersonModel);
-        this.$router.push({ name: "Posts" });
+      submit() {
+        Api()
+          .put(`/user/user/${this.user._id}`, this.newPersonModel)
+          .then(result => {
+            this.newPersonModel = result.data.user;
+            this.$store.commit("setUser", this.newPersonModel);
+            this.$router.push({ name: "Users" });
+          })
+          .catch(err => {
+            console.error(err);
+          });
       },
       setNewPersonModel() {
-        let token = this.authenticated;
-        let decoded = VueJwtDecode.decode(token);
-        this.newPersonModel.name = decoded.name;
-        this.newPersonModel.email = decoded.email;
+        if (!this.user) return;
+
+        this.newPersonModel.name = this.user.name;
+        this.newPersonModel.email = this.user.email;
+        this.newPersonModel._id = this.user._id;
+        this.newPersonModel.lat = this.user.lat ? this.user.lat : null;
+        this.newPersonModel.long = this.user.long ? this.user.long : null;
+        this.newPersonModel.comment = this.user.comment ? this.user.comment : "";
       },
       getUserPosition() {
         let _this = this;
@@ -93,7 +122,6 @@
           navigator.geolocation.getCurrentPosition(function(position) {
             _this.newPersonModel.lat = position.coords.latitude;
             _this.newPersonModel.long = position.coords.longitude;
-            _this.showPosition = true;
           });
         }
       }
