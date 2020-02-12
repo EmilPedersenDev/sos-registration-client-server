@@ -96,25 +96,6 @@
             this.users = result.data.users;
           });
       },
-      // filteredUsers(searchInput) {
-      //   if (!searchInput) return;
-
-      //   this.users = this.users.filter(val => {
-      //     for (var key in val) {
-      //       if (
-      //         val[key]
-      //           .toString()
-      //           .toLowerCase()
-      //           .indexOf(searchInput.toString().toLowerCase()) > -1
-      //       ) {
-      //         console.log(val);
-
-      //         return val;
-      //       }
-      //     }
-      //   });
-      //   console.log(searchInput);
-      // },
       isCurrentUser(id) {
         if (!id) return false;
         if (!this.auth) return false;
