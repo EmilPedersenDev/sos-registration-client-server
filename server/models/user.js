@@ -69,7 +69,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
 
 userSchema.statics.checkIfExistingUser = async email => {
   const user = await User.findOne({ email });
-
   return user;
 };
 

@@ -50,12 +50,13 @@
         userId: null
       };
     },
-    mounted() {
+    created() {
       this.getUsers();
     },
     computed: {
       ...mapGetters({ auth: "authenticated", userState: "getUser" }),
       LinkText() {
+        if (!this.userState._id) return;
         if (this.userState.lat && this.userState.long) {
           return "Edit your location";
         } else {
