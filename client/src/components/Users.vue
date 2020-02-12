@@ -21,8 +21,7 @@
           </td>
           <td>{{user.comment}}</td>
           <td align="center" v-if="isCurrentUser(user._id)">
-            <router-link :to="{ name: 'RegisterPosition' }">Edit</router-link>|
-            <a href="#">Delete</a>
+            <router-link :to="{ name: 'RegisterPosition' }">Edit</router-link>
           </td>
         </tr>
       </table>

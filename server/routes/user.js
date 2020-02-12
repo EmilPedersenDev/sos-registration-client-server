@@ -57,4 +57,20 @@ router.put("/user/:id", (req, res) => {
   });
 });
 
+router.delete("/user/:id", (req, res) => {
+  User.remove(
+    {
+      _id: req.params.id
+    },
+    function(err, user) {
+      if (err) {
+        res.send(err);
+      }
+      res.send({
+        success: true
+      });
+    }
+  );
+});
+
 module.exports = router;
