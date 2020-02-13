@@ -8,7 +8,9 @@
     </div>
     <div v-if="users.length > 0" class="table-wrap">
       <div>
-        <router-link :to="{ name: 'RegisterPosition' }" class>{{LinkText}}</router-link>
+        <router-link :to="{ name: 'RegisterPosition' }" class>{{
+          LinkText
+        }}</router-link>
       </div>
       <table>
         <tr>
@@ -18,16 +20,26 @@
           <td>Message</td>
           <td align="center">Edit</td>
         </tr>
-        <tr v-for="user in filteredUsers" :key="user._id" :class="{'current-user': isCurrentUser(user._id)}">
+        <tr
+          v-for="user in filteredUsers"
+          :key="user._id"
+          :class="{ 'current-user': isCurrentUser(user._id) }"
+        >
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td v-if="user.location">{{user.location.slice(7)}}</td>
+          <td v-if="user.location">{{ user.location.slice(7) }}</td>
           <td v-else>
-            <span v-if="user.lat || user.long">Latitude: {{ user.lat }}, Longitude: {{user.long}}</span>
+            <span v-if="user.lat || user.long"
+              >Latitude: {{ user.lat }}, Longitude: {{ user.long }}</span
+            >
           </td>
-          <td>{{user.comment}}</td>
+          <td>{{ user.comment }}</td>
           <td align="center">
-            <router-link :to="{ name: 'RegisterPosition' }" v-if="isCurrentUser(user._id)">Edit</router-link>
+            <router-link
+              :to="{ name: 'RegisterPosition' }"
+              v-if="isCurrentUser(user._id)"
+              >Edit</router-link
+            >
           </td>
         </tr>
       </table>
@@ -36,43 +48,56 @@
       There are no users..
       <br />
       <br />
-      <router-link :to="{ name: 'RegisterPosition' }" class="add_post_link">{{LinkText}}</router-link>
+      <router-link :to="{ name: 'RegisterPosition' }" class="add_post_link">{{
+        LinkText
+      }}</router-link>
     </div>
   </div>
 </template>
 
 <script>
-import PostsService from '@/services/PostsService';
-import VueJwtDecode from 'vue-jwt-decode';
-import Api from '../services/Api';
-import { mapGetters } from 'vuex';
+import PostsService from "@/services/PostsService";
+import VueJwtDecode from "vue-jwt-decode";
+import Api from "../services/Api";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'users',
+  name: "users",
   data() {
     return {
       users: [],
       userId: null,
-      search: ''
+      search: ""
     };
   },
   created() {
     this.getUsers();
   },
   computed: {
-    ...mapGetters({ auth: 'authenticated', userState: 'getUser' }),
+    ...mapGetters({ auth: "authenticated", userState: "getUser" }),
     LinkText() {
       if (!this.userState._id) return;
       if (this.userState.lat && this.userState.long) {
-        return 'Edit your location';
+        return "Edit your location";
       } else {
-        return 'Add your location';
+        return "Add your location";
       }
     },
     filteredUsers() {
-      if (!this.search) return this.users;
-
       let usersFilterArr = this.users;
+      if (!this.search) {
+        usersFilterArr.sort((a, b) => {
+          if (a._id === this.userState._id) {
+            return -1;
+          } else if (b._id === this.userState._id) {
+            return 1;
+          } else if (a.name.toLowerCase() > b.name.toLowerCase()) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+      }
 
       usersFilterArr = usersFilterArr.filter(val => {
         for (let key in val) {
@@ -92,7 +117,7 @@ export default {
   methods: {
     getUsers() {
       Api()
-        .get('/user/users')
+        .get("/user/users")
         .then(result => {
           this.users = result.data.users;
         });
