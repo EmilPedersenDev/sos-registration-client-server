@@ -24,6 +24,9 @@ const userSchema = mongoose.Schema({
   long: {
     type: Number
   },
+  location: {
+    type: String
+  },
   tokens: [
     {
       token: {

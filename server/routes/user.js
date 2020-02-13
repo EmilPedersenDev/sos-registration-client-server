@@ -9,7 +9,7 @@ router.post("/login", userController.loginUser);
 router.get("/me", auth, userController.getUserDetails);
 
 router.get("/users", (req, res) => {
-  User.find({}, "name email comment lat long", function(error, users) {
+  User.find({}, "name email comment lat long location", function(error, users) {
     if (error) {
       console.error(error);
     }
@@ -20,19 +20,20 @@ router.get("/users", (req, res) => {
 });
 
 router.get("/user/:id", (req, res) => {
-  User.findById(req.params.id, "_id name email comment lat long", function(
-    error,
-    user
-  ) {
-    if (error) {
-      console.error(error);
+  User.findById(
+    req.params.id,
+    "_id name email comment lat long location",
+    function(error, user) {
+      if (error) {
+        console.error(error);
+      }
+      res.send(user);
     }
-    res.send(user);
-  });
+  );
 });
 
 router.put("/user/:id", (req, res) => {
-  User.findById(req.params.id, "name email comment lat long", function(
+  User.findById(req.params.id, "name email comment lat long location", function(
     error,
     user
   ) {
@@ -45,6 +46,7 @@ router.put("/user/:id", (req, res) => {
     user.comment = req.body.comment;
     user.lat = req.body.lat;
     user.long = req.body.long;
+    user.location = req.body.location;
 
     user.save(error => {
       if (error) {
