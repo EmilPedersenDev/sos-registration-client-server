@@ -13,35 +13,37 @@
         }}</router-link>
       </div>
       <table>
-        <tr>
-          <td>Name</td>
-          <td>Email</td>
-          <td>Location</td>
-          <td>Message</td>
-          <td align="center">Edit</td>
-        </tr>
-        <tr
-          v-for="user in filteredUsers"
-          :key="user._id"
-          :class="{ 'current-user': isCurrentUser(user._id) }"
-        >
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td v-if="user.location">{{ user.location.slice(7) }}</td>
-          <td v-else>
-            <span v-if="user.lat || user.long"
-              >Latitude: {{ user.lat }}, Longitude: {{ user.long }}</span
-            >
-          </td>
-          <td>{{ user.comment }}</td>
-          <td align="center">
-            <router-link
-              :to="{ name: 'RegisterPosition' }"
-              v-if="isCurrentUser(user._id)"
-              >Edit</router-link
-            >
-          </td>
-        </tr>
+        <thead>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Location</th>
+          <th>Message</th>
+          <th align="center">Edit</th>
+        </thead>
+        <tbody>
+          <tr
+            v-for="user in filteredUsers"
+            :key="user._id"
+            :class="{ 'current-user': isCurrentUser(user._id) }"
+          >
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td v-if="user.location">{{ user.location.slice(7) }}</td>
+            <td v-else>
+              <span v-if="user.lat || user.long"
+                >Latitude: {{ user.lat }}, Longitude: {{ user.long }}</span
+              >
+            </td>
+            <td>{{ user.comment }}</td>
+            <td>
+              <router-link
+                :to="{ name: 'RegisterPosition' }"
+                v-if="isCurrentUser(user._id)"
+                >Edit</router-link
+              >
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <div v-else>
@@ -146,23 +148,30 @@ export default {
     table {
       width: 100%;
       thead {
-        background: #f2f2f2;
-      }
-      th,
-      tr {
-        text-align: left;
-        &.current-user {
-          background: lightgreen !important;
-        }
-        &:nth-child(odd) {
-          background: #f2f2f2;
-        }
-        &:nth-child(1) {
-          background: #4d7ef7;
-          color: #fff;
-        }
-        td {
+        background: rgba(33, 45, 94, 0.884);
+        color: #fff;
+        th {
+          text-align: left;
           padding: 10px;
+        }
+      }
+      tbody {
+        tr {
+          text-align: left;
+          &.current-user {
+            background: rgba(0, 163, 0, 0.62) !important;
+          }
+
+          &:nth-child(odd) {
+            background: #e5e5e5;
+          }
+          td {
+            padding: 10px;
+            a {
+              color: red;
+              font-weight: 600;
+            }
+          }
         }
       }
     }
