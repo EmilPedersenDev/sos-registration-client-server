@@ -18,14 +18,10 @@
           </div>
         </div>
       </div>
-      <div class="map-position">
+      <div class="map">
         <div class="row justify-content-center">
           <div class="col-12 col-sm-6">
-            <sos-button primary large @click="getUserPosition()" v-if="!showPosition">Get Your Position</sos-button>
-            <div v-if="showPosition">
-              <p>Latitude: {{newPersonModel.lat}}</p>
-              <p>Longitude: {{newPersonModel.long}}</p>
-            </div>
+            <google-map @addMarker="getLocation" :user="user"></google-map>
           </div>
         </div>
       </div>
@@ -48,114 +44,111 @@
 </template>
 
 <script>
-  import PostsService from "@/services/PostsService";
-  import VueJwtDecode from "vue-jwt-decode";
-  import Api from "../services/Api";
+import PostsService from '@/services/PostsService';
+import VueJwtDecode from 'vue-jwt-decode';
+import Api from '../services/Api';
+import GoogleMap from './GoogleMap';
 
-  import { mapGetters } from "vuex";
-  export default {
-    name: "register-position",
-    data() {
-      return {
-        newPersonModel: {
-          _id: null,
-          name: "",
-          email: "",
-          comment: "",
-          lat: null,
-          long: null
-        }
-      };
-    },
-    mounted() {
-      if (this.auth) {
-        this.setNewPersonModel();
+import { mapGetters } from 'vuex';
+export default {
+  name: 'register-position',
+  data() {
+    return {
+      newPersonModel: {
+        _id: null,
+        name: '',
+        email: '',
+        comment: '',
+        lat: null,
+        long: null
       }
-    },
-    computed: {
-      ...mapGetters({ auth: "authenticated", user: "getUser" }),
-      showPosition() {
-        if (!this.user) return false;
-        return this.newPersonModel.lat || this.newPersonModel.long ? true : false;
-      },
-      HeaderText() {
-        if (!this.user.lat || !this.user.long) {
-          return "Add your location";
-        } else {
-          return "Update your location";
-        }
-      }
-    },
-    watch: {
-      user(val) {
-        if (val) {
-          this.setNewPersonModel();
-        }
-      }
-    },
-    methods: {
-      submit() {
-        Api()
-          .put(`/user/user/${this.user._id}`, this.newPersonModel)
-          .then(result => {
-            this.newPersonModel = result.data.user;
-            this.$store.commit("setUser", this.newPersonModel);
-            this.$router.push({ name: "Users" });
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      },
-      setNewPersonModel() {
-        if (!this.user) return;
-
-        this.newPersonModel.name = this.user.name;
-        this.newPersonModel.email = this.user.email;
-        this.newPersonModel._id = this.user._id;
-        this.newPersonModel.lat = this.user.lat ? this.user.lat : null;
-        this.newPersonModel.long = this.user.long ? this.user.long : null;
-        this.newPersonModel.comment = this.user.comment ? this.user.comment : "";
-      },
-      getUserPosition() {
-        let _this = this;
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            _this.newPersonModel.lat = position.coords.latitude;
-            _this.newPersonModel.long = position.coords.longitude;
-          });
-        }
+    };
+  },
+  components: {
+    GoogleMap
+  },
+  mounted() {
+    if (this.auth) {
+      this.setNewPersonModel();
+    }
+  },
+  computed: {
+    ...mapGetters({ auth: 'authenticated', user: 'getUser' }),
+    HeaderText() {
+      if (!this.user.lat || !this.user.long) {
+        return 'Add your location';
+      } else {
+        return 'Update your location';
       }
     }
-  };
+  },
+  watch: {
+    user(val) {
+      if (val) {
+        this.setNewPersonModel();
+      }
+    }
+  },
+  methods: {
+    submit() {
+      Api()
+        .put(`/user/user/${this.user._id}`, this.newPersonModel)
+        .then(result => {
+          this.newPersonModel = result.data.user;
+          this.$store.commit('setUser', this.newPersonModel);
+          this.$router.push({ name: 'Users' });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+    getLocation(location) {
+      if (!location.position.lat) return;
+
+      this.newPersonModel.lat = location.position.lat;
+      this.newPersonModel.long = location.position.lng;
+    },
+    setNewPersonModel() {
+      if (!this.user) return;
+
+      this.newPersonModel.name = this.user.name;
+      this.newPersonModel.email = this.user.email;
+      this.newPersonModel._id = this.user._id;
+      this.newPersonModel.lat = this.user.lat ? this.user.lat : this.newPersonModel.lat ? this.newPersonModel.lat : null;
+      this.newPersonModel.long = this.user.long ? this.user.long : this.newPersonModel.long ? this.newPersonModel.long : null;
+      this.newPersonModel.comment = this.user.comment ? this.user.comment : '';
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-  .register-position {
-    width: 100%;
-    .container {
+.register-position {
+  width: 100%;
+  .container {
+    .row {
+      margin: 20px 0px;
+    }
+    .account-info {
+    }
+    .map-position {
       .row {
-        margin: 20px 0px;
-      }
-      .account-info {
-      }
-      .map-position {
-        .row {
-          margin: 35px 0px;
-          button {
-            width: 100%;
-          }
+        margin: 35px 0px;
+        button {
+          width: 100%;
         }
       }
-      .comment {
-      }
-      .submit {
-        .row {
-          margin: 35px 0px;
-          button {
-            width: 100%;
-          }
+    }
+    .comment {
+    }
+    .submit {
+      .row {
+        margin: 35px 0px;
+        button {
+          width: 100%;
         }
       }
     }
   }
+}
 </style>
