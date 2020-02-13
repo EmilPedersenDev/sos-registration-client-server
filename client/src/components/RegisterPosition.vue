@@ -44,10 +44,11 @@
 </template>
 
 <script>
-import PostsService from '@/services/PostsService';
+import axios from 'axios';
 import VueJwtDecode from 'vue-jwt-decode';
 import Api from '../services/Api';
 import GoogleMap from './GoogleMap';
+import { googleApiKey } from '../common/constants';
 
 import { mapGetters } from 'vuex';
 export default {
@@ -60,7 +61,8 @@ export default {
         email: '',
         comment: '',
         lat: null,
-        long: null
+        long: null,
+        location: ''
       }
     };
   },
@@ -91,15 +93,29 @@ export default {
   },
   methods: {
     submit() {
-      Api()
-        .put(`/user/user/${this.user._id}`, this.newPersonModel)
+      debugger;
+      let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.newPersonModel.lat},${this.newPersonModel.long}&key=${googleApiKey}`;
+      axios
+        .get(url)
         .then(result => {
-          this.newPersonModel = result.data.user;
-          this.$store.commit('setUser', this.newPersonModel);
-          this.$router.push({ name: 'Users' });
+          let city = result.data.plus_code.compound_code;
+          this.newPersonModel.location = city;
+
+          Api()
+            .put(`/user/user/${this.user._id}`, this.newPersonModel)
+            .then(result => {
+              this.newPersonModel = result.data.user;
+              this.$store.commit('setUser', this.newPersonModel);
+            })
+            .catch(err => {
+              console.error(err);
+            });
         })
-        .catch(err => {
-          console.error(err);
+        .catch(error => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.$router.push({ name: 'Users' });
         });
     },
     getLocation(location) {
