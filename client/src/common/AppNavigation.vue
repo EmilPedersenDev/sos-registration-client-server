@@ -83,9 +83,6 @@
       },
       logout() {
         this.showLogoutModal = true;
-        // localStorage.removeItem("jwt");
-        // this.$store.commit("setToken");
-        // this.$router.push("/");
       }
     }
   };
@@ -95,8 +92,7 @@
   .nav {
     width: 100%;
     display: flex;
-    // margin-bottom: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(30, 139, 195, 1);
+    box-shadow: 0px 8px 16px 0px #80c565;
     margin-bottom: 40px;
 
     ul {

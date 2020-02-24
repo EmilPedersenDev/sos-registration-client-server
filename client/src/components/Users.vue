@@ -8,9 +8,11 @@
     </div>
     <div v-if="users.length > 0" class="table-wrap">
       <div>
-        <router-link :to="{ name: 'RegisterPosition' }" class>{{
+        <router-link :to="{ name: 'RegisterPosition' }" class>
+          {{
           LinkText
-        }}</router-link>
+          }}
+        </router-link>
       </div>
       <table>
         <thead>
@@ -21,26 +23,21 @@
           <th align="center">Edit</th>
         </thead>
         <tbody>
-          <tr
-            v-for="user in filteredUsers"
-            :key="user._id"
-            :class="{ 'current-user': isCurrentUser(user._id) }"
-          >
-            <td>{{ user.name }}</td>
+          <tr v-for="user in filteredUsers" :key="user._id" :class="[  isCurrentUser(user._id) ? 'current-user' : 'other-user'  ]">
+            <td>
+              <i class="fas fa-user-circle" v-if="isCurrentUser(user._id)"></i>
+              <span>{{ user.name }}</span>
+            </td>
             <td>{{ user.email }}</td>
             <td v-if="user.location">{{ user.location.slice(7) }}</td>
             <td v-else>
-              <span v-if="user.lat || user.long"
-                >Latitude: {{ user.lat }}, Longitude: {{ user.long }}</span
-              >
+              <span v-if="user.lat || user.long">Latitude: {{ user.lat }}, Longitude: {{ user.long }}</span>
             </td>
             <td>{{ user.comment }}</td>
             <td>
-              <router-link
-                :to="{ name: 'RegisterPosition' }"
-                v-if="isCurrentUser(user._id)"
-                >Edit</router-link
-              >
+              <router-link :to="{ name: 'RegisterPosition' }" v-if="isCurrentUser(user._id)">
+                <i class="fas fa-edit"></i>
+              </router-link>
             </td>
           </tr>
         </tbody>
@@ -50,131 +47,192 @@
       There are no users..
       <br />
       <br />
-      <router-link :to="{ name: 'RegisterPosition' }" class="add_post_link">{{
+      <router-link :to="{ name: 'RegisterPosition' }" class="add_post_link">
+        {{
         LinkText
-      }}</router-link>
+        }}
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import PostsService from "@/services/PostsService";
-import VueJwtDecode from "vue-jwt-decode";
-import Api from "../services/Api";
-import { mapGetters } from "vuex";
+  import PostsService from "@/services/PostsService";
+  import VueJwtDecode from "vue-jwt-decode";
+  import Api from "../services/Api";
+  import { mapGetters } from "vuex";
 
-export default {
-  name: "users",
-  data() {
-    return {
-      users: [],
-      userId: null,
-      search: ""
-    };
-  },
-  created() {
-    this.getUsers();
-  },
-  computed: {
-    ...mapGetters({ auth: "authenticated", userState: "getUser" }),
-    LinkText() {
-      if (!this.userState._id) return;
-      if (this.userState.lat && this.userState.long) {
-        return "Edit your location";
-      } else {
-        return "Add your location";
-      }
+  export default {
+    name: "users",
+    data() {
+      return {
+        users: [],
+        userId: null,
+        search: ""
+      };
     },
-    filteredUsers() {
-      let usersFilterArr = this.users;
-      if (!this.search) {
-        usersFilterArr.sort((a, b) => {
-          if (a._id === this.userState._id) {
-            return -1;
-          } else if (b._id === this.userState._id) {
-            return 1;
-          } else if (a.name.toLowerCase() > b.name.toLowerCase()) {
-            return 1;
-          } else {
-            return -1;
-          }
-        });
-      }
-
-      usersFilterArr = usersFilterArr.filter(val => {
-        for (let key in val) {
-          if (
-            val[key]
-              .toString()
-              .toLowerCase()
-              .indexOf(this.search.toString().toLowerCase()) > -1
-          ) {
-            return val;
-          }
+    created() {
+      this.getUsers();
+    },
+    computed: {
+      ...mapGetters({ auth: "authenticated", userState: "getUser" }),
+      LinkText() {
+        if (!this.userState._id) return;
+        if (this.userState.lat && this.userState.long) {
+          return "Edit your location";
+        } else {
+          return "Add your location";
         }
-      });
-      return usersFilterArr;
-    }
-  },
-  methods: {
-    getUsers() {
-      Api()
-        .get("/user/users")
-        .then(result => {
-          this.users = result.data.users;
-        });
-    },
-    isCurrentUser(id) {
-      if (!id) return false;
-      if (!this.auth) return false;
+      },
+      filteredUsers() {
+        let usersFilterArr = this.users;
+        if (!this.search) {
+          usersFilterArr.sort((a, b) => {
+            if (a._id === this.userState._id) {
+              return -1;
+            } else if (b._id === this.userState._id) {
+              return 1;
+            } else if (a.name.toLowerCase() > b.name.toLowerCase()) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+        }
 
-      let decodedToken = VueJwtDecode.decode(this.auth);
-      return decodedToken._id === id;
+        usersFilterArr = usersFilterArr.filter(val => {
+          for (let key in val) {
+            if (
+              val[key]
+                .toString()
+                .toLowerCase()
+                .indexOf(this.search.toString().toLowerCase()) > -1
+            ) {
+              return val;
+            }
+          }
+        });
+        return usersFilterArr;
+      }
+    },
+    methods: {
+      getUsers() {
+        Api()
+          .get("/user/users")
+          .then(result => {
+            this.users = result.data.users;
+          });
+      },
+      isCurrentUser(id) {
+        if (!id) return false;
+        if (!this.auth) return false;
+
+        let decodedToken = VueJwtDecode.decode(this.auth);
+        return decodedToken._id === id;
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>
-.Users {
-  .table-wrap {
-    width: 90%;
-    margin: 0 auto;
-    text-align: center;
-    a {
-      color: #4d7ef7;
-      text-decoration: none;
-    }
-    table {
-      width: 100%;
-      thead {
-        background: rgba(33, 45, 94, 0.884);
-        color: #fff;
-        th {
-          text-align: left;
-          padding: 10px;
-        }
+  .Users {
+    .table-wrap {
+      width: 90%;
+      margin: 0 auto;
+      text-align: center;
+      a {
+        color: #4d7ef7;
+        text-decoration: none;
       }
-      tbody {
-        tr {
-          text-align: left;
-          &.current-user {
-            background: rgba(0, 163, 0, 0.62) !important;
-          }
+      table {
+        width: 100%;
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
 
-          &:nth-child(odd) {
-            background: #e5e5e5;
-          }
-          td {
+        thead {
+          background: #001e3c;
+          color: #fff;
+          th {
+            text-align: left;
             padding: 10px;
-            a {
-              color: red;
-              font-weight: 600;
+            &:first-child {
+              border-top-left-radius: 8px;
+            }
+            &:last-child {
+              border-top-right-radius: 8px;
+            }
+          }
+        }
+        tbody {
+          tr {
+            text-align: left;
+            border-top: 1px solid #d6d3d0;
+
+            &:last-child {
+              td {
+                &:first-child {
+                  border-bottom-left-radius: 8px;
+                }
+                &:last-child {
+                  border-bottom-right-radius: 8px;
+                }
+              }
+            }
+
+            &.current-user {
+              border-top: none;
+              background: #9fd38a !important;
+              border-bottom-left-radius: 10px;
+              border-bottom-right-radius: 10px;
+              td {
+                &:first-child {
+                  position: relative;
+                  bottom: 0px;
+                  .fas {
+                    position: absolute;
+                    bottom: 12px;
+                    color: #001e3c;
+                    font-size: 20px;
+                  }
+                  span {
+                    display: inline-block;
+                    margin-left: 30px;
+                  }
+                }
+                &:last-child {
+                  text-align: center;
+                  .fas {
+                    color: #001e3c;
+                  }
+                }
+              }
+            }
+
+            &.other-user {
+              &:last-child {
+                td {
+                  &:first-child {
+                    border-bottom-left-radius: 8px;
+                  }
+                  &:last-child {
+                    border-bottom-right-radius: 8px;
+                  }
+                }
+              }
+            }
+
+            &:nth-child(odd) {
+              background: #e5e5e5;
+            }
+            td {
+              padding: 10px;
+              &:nth-child(1) {
+                min-width: 140px;
+              }
             }
           }
         }
       }
     }
   }
-}
 </style>
