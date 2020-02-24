@@ -1,19 +1,12 @@
 <template>
   <div class="Users">
     <h1>SoS Registration</h1>
-    <div class="row justify-content-center">
-      <div class="col-4 search-wrapper">
-        <st-input placeholder="Search" v-model="search"></st-input>
-      </div>
+    <users-info-text></users-info-text>
+    <div class="col-4 search-wrapper">
+      <i class="fas fa-search"></i>
+      <st-input placeholder="Search for a person" v-model="search"></st-input>
     </div>
     <div v-if="users.length > 0" class="table-wrap">
-      <div>
-        <router-link :to="{ name: 'RegisterPosition' }" class>
-          {{
-          LinkText
-          }}
-        </router-link>
-      </div>
       <table>
         <thead>
           <th>Name</th>
@@ -61,6 +54,7 @@
   import VueJwtDecode from "vue-jwt-decode";
   import Api from "../services/Api";
   import { mapGetters } from "vuex";
+  import UsersInfoText from "./UsersInfoText";
 
   export default {
     name: "users",
@@ -70,6 +64,9 @@
         userId: null,
         search: ""
       };
+    },
+    components: {
+      UsersInfoText
     },
     created() {
       this.getUsers();
@@ -136,18 +133,30 @@
 
 <style lang="scss" scoped>
   .Users {
+    h1 {
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+    .search-wrapper {
+      margin: 0 auto;
+      .fa-search {
+        left: 30px;
+        top: 15px;
+        position: absolute;
+      }
+      input {
+        padding-left: 40px;
+      }
+    }
     .table-wrap {
       width: 90%;
       margin: 0 auto;
       text-align: center;
-      a {
-        color: #4d7ef7;
-        text-decoration: none;
-      }
       table {
         width: 100%;
         box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.4);
         border-radius: 10px;
+        margin: 40px 0px;
 
         thead {
           background: #001e3c;
@@ -200,8 +209,9 @@
                   }
                 }
                 &:last-child {
-                  text-align: center;
+                  text-align: left;
                   .fas {
+                    padding-left: 10px;
                     color: #001e3c;
                   }
                 }
