@@ -184,12 +184,18 @@ export default {
 <style lang="scss" scoped>
 .register-position {
   width: 100%;
+  background: linear-gradient(rgba(255, 255, 255, 0.2)),
+    url("~@/assets/forest1.jpg") no-repeat;
+  background-size: cover;
+  padding: 10px;
+  z-index: 9998;
   .location-container {
     width: 35%;
     padding: 30px;
     margin: 60px auto;
     box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.4);
     border-radius: 20px;
+    background-color: #fff;
 
     h1 {
       margin-top: 15px;

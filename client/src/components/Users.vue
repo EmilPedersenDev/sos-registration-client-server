@@ -1,6 +1,6 @@
 <template>
   <div class="Users">
-    <h1>SoS Registration</h1>
+    <h1>Search people in need</h1>
     <users-info-text></users-info-text>
     <div class="col-4 search-wrapper">
       <i class="fas fa-search"></i>
