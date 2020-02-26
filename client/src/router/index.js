@@ -32,10 +32,10 @@ const routes = [
   {
     path: "/users",
     name: "Users",
-    component: Users,
-    meta: {
-      requiresAuth: true
-    }
+    component: Users
+    // meta: {
+    //   requiresAuth: true
+    // }
   },
   {
     path: "/users/add-position",
@@ -65,7 +65,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (localStorage.getItem("jwt") == null) {
       next({
-        path: "/"
+        path: "/users"
       });
     } else {
       next();

@@ -8,6 +8,7 @@ const state = {
 
 const actions = {
   setUser: ({ commit, dispatch }) => {
+    debugger;
     const token = localStorage.getItem("jwt");
     let decodedToken = VueJwtDecode.decode(token);
 
