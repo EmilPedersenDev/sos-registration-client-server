@@ -1,12 +1,12 @@
 <template>
-  <div class="Users">
+  <div class="Users ">
     <h1>Search people in need</h1>
     <users-info-text></users-info-text>
     <div class="col-4 search-wrapper">
       <i class="fas fa-search"></i>
       <st-input placeholder="Search for a person" v-model="search"></st-input>
     </div>
-    <div v-if="users.length > 0" class="table-wrap">
+    <div v-if="users.length > 0" class="table-wrap d-none d-md-block">
       <table>
         <thead>
           <th>Name</th>
@@ -45,7 +45,45 @@
         </tbody>
       </table>
     </div>
-    <div v-else>There are no users..</div>
+    <div class="mobile-table-wrapper d-sm-block">
+      <div class="mobile-item" v-for="user in filteredUsers" :key="user._id">
+        <div class="row">
+          <div class="col-4 bold">
+            <p>Name:</p>
+          </div>
+          <div class="col-8  ">
+            <p>{{ user.name }}</p>
+          </div>
+          <div class="col-4 bold">
+            <p>Latest Update:</p>
+          </div>
+          <div class="col-8  ">
+            <p>{{ user.time }}</p>
+          </div>
+          <div class="col-4 bold">
+            <p>Location:</p>
+          </div>
+          <div class="col-8  ">
+            <p v-if="user.location">{{ user.location.slice(7) }}</p>
+          </div>
+          <div class="col-4 bold">
+            <p>Message:</p>
+          </div>
+          <div class="col-8  ">
+            <p>{{ user.comment }}</p>
+          </div>
+          <div class="col-4 bold">
+            <router-link
+              :to="{ name: 'RegisterPosition' }"
+              v-if="isCurrentUser(user._id)"
+            >
+              <i class="fas fa-edit"></i>
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="!users">There are no users..</div>
   </div>
 </template>
 

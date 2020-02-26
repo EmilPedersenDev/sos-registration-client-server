@@ -1,12 +1,15 @@
 <template>
   <div class="nav" id="fading" :class="{ 'no-margin': isRegisterPosition }">
-    <div class="left-nav col-md-4">
-      <router-link to="/users">
+    <div class="left-nav col-2 col-md-4">
+      <router-link to="/users" class="d-none d-md-block">
         <img src="../assets/logo.svg" alt />
+      </router-link>
+      <router-link to="/users" class="img-png">
+        <img src="../assets/cutlogo.png" alt />
       </router-link>
       <div class="user-info"></div>
     </div>
-    <div class="right-nav col-md-8">
+    <div class="right-nav col-10 col-md-8">
       <ul>
         <li>
           <router-link to="/users">Search People</router-link>
@@ -97,8 +100,25 @@ export default {
     justify-content: flex-start;
     padding-left: 100px;
     height: 110px;
+
+    .img-png {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      padding: 0px;
+      .img-png {
+        display: block;
+        img {
+          width: 50px;
+        }
+      }
+    }
     img {
       width: 180px;
+      @media (max-width: 768px) {
+        width: 150px;
+      }
     }
   }
   .right-nav {
@@ -106,6 +126,12 @@ export default {
     align-items: center;
     justify-content: flex-end;
     padding-right: 100px;
+    @media (max-width: 768px) {
+      padding: 0px;
+      a {
+        font-size: 12px;
+      }
+    }
 
     ul {
       display: flex;
