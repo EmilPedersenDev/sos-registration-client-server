@@ -1,22 +1,42 @@
 <template>
   <div class="map-container">
     <div class="search-wrapper">
-      <h4>Update your position</h4>
-      <gmap-autocomplete class="col-10" @place_changed="setPlace"></gmap-autocomplete>
-      <button class="col-2" @click="addMarker">Add</button>
+      <slot></slot>
+      <gmap-autocomplete
+        class="col-10"
+        @place_changed="setPlace"
+      ></gmap-autocomplete>
+      <sos-button tretton class="col-2 search-field-button" @click="addMarker">
+        Add
+      </sos-button>
       <br />
     </div>
     <br />
-    <gmap-map ref="mapRef" :options="{streetViewControl: false, disableDefaultUI: true, zoomControl: true, panControl: true,}" :center="center" :zoom="12" style="width:100%;  height: 400px;">
-      <gmap-marker :position="marker.position" :clickable="true" @click="setCenter"></gmap-marker>
+    <gmap-map
+      ref="mapRef"
+      :options="{
+        streetViewControl: false,
+        disableDefaultUI: true,
+        zoomControl: true,
+        panControl: true
+      }"
+      :center="center"
+      :zoom="12"
+      style="width:100%;  height: 400px;"
+    >
+      <gmap-marker
+        :position="marker.position"
+        :clickable="true"
+        @click="setCenter"
+      ></gmap-marker>
     </gmap-map>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
-  name: 'google-map',
+  name: "google-map",
   props: {
     user: {
       type: Object
@@ -68,7 +88,7 @@ export default {
         this.places.push(this.currentPlace);
         this.center = marker;
         this.currentPlace = null;
-        this.$emit('addMarker', this.marker);
+        this.$emit("addMarker", this.marker);
       }
     },
     geolocate() {
@@ -86,7 +106,7 @@ export default {
           };
 
           this.marker = Object.assign({ position: this.center });
-          this.$emit('addMarker', this.marker);
+          this.$emit("addMarker", this.marker);
         });
       }
     }
@@ -95,4 +115,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.map-container {
+  .search-wrapper {
+    input {
+      height: 48px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .search-field-button {
+      height: 48px;
+      bottom: 1px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border: 1px solid #807569;
+      border-left: none;
+    }
+  }
+}
 </style>

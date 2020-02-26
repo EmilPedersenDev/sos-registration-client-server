@@ -1,7 +1,7 @@
 <template>
   <div class="users-info-text">
-    <h5>Here you can see all the people that as of now is in some kind of danger.</h5>
-    <router-link :to="{ name: 'RegisterPosition' }">
+    <h5 :class="{'notAuthenticated' : !auth}">Here you can see all the people that as of now is in some kind of danger.</h5>
+    <router-link v-if="auth" :to="{ name: 'RegisterPosition' }">
       {{
       LinkText
       }}
@@ -15,8 +15,9 @@
   export default {
     name: "users-info-text",
     computed: {
-      ...mapGetters({ userState: "getUser" }),
+      ...mapGetters({ userState: "getUser", auth: "authenticated" }),
       LinkText() {
+        if (!this.auth) return;
         if (!this.userState._id) return;
         if (this.userState.lat && this.userState.long) {
           return `Edit your location ${this.userState.name}`;
@@ -33,6 +34,9 @@
     width: 100%;
     h5 {
       margin: 20px;
+    }
+    .notAuthenticated {
+      margin-bottom: 35px;
     }
 
     a {

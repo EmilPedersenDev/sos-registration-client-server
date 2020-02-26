@@ -10,6 +10,10 @@
             Dont have an account??
             <router-link to="/register">click here</router-link>
           </p>
+          <p>
+            Visitor Checking?
+            <router-link to="/users">click here</router-link>
+          </p>
           <!-- Sign in button -->
           <center>
             <button class="btn btn-primary btn-block w-75 my-4" type="submit">Sign in</button>

@@ -41,7 +41,7 @@
             localStorage.setItem("jwt", token);
             this.$store.commit("setToken", token);
             this.$store.dispatch("setUser");
-            this.$router.push("/users");
+            this.$router.push({ name: "RegisterPosition" });
             swal("Success", "Registration Was successful", "success");
           } else {
             swal("Error", "Something Went Wrong", "error");

@@ -9,14 +9,19 @@ router.post("/login", userController.loginUser);
 router.get("/me", auth, userController.getUserDetails);
 
 router.get("/users", (req, res) => {
-  User.find({}, "name email comment lat long location", function(error, users) {
+  User.find({}, "name email comment lat long location time", function(
+    error,
+    users
+  ) {
     if (error) {
       console.error(error);
     }
     res.send({
       users: users
     });
-  }).sort({ _id: -1 });
+  })
+    .collation({ locale: "sv" })
+    .sort({ name: 1 });
 });
 
 router.get("/user/:id", (req, res) => {
@@ -33,30 +38,32 @@ router.get("/user/:id", (req, res) => {
 });
 
 router.put("/user/:id", (req, res) => {
-  User.findById(req.params.id, "name email comment lat long location", function(
-    error,
-    user
-  ) {
-    if (error) {
-      console.error(error);
-    }
-
-    user.name = req.body.name;
-    user.email = req.body.email;
-    user.comment = req.body.comment;
-    user.lat = req.body.lat;
-    user.long = req.body.long;
-    user.location = req.body.location;
-
-    user.save(error => {
+  User.findById(
+    req.params.id,
+    "name email comment lat long location time",
+    function(error, user) {
       if (error) {
         console.error(error);
       }
-      res.send({
-        user
+
+      user.name = req.body.name;
+      user.email = req.body.email;
+      user.comment = req.body.comment;
+      user.lat = req.body.lat;
+      user.long = req.body.long;
+      user.location = req.body.location;
+      user.time = req.body.time;
+
+      user.save(error => {
+        if (error) {
+          console.error(error);
+        }
+        res.send({
+          user
+        });
       });
-    });
-  });
+    }
+  );
 });
 
 router.delete("/user/:id", (req, res) => {
