@@ -1,8 +1,8 @@
 <template>
-  <div class="Users ">
-    <h1>Search people in need</h1>
-    <users-info-text></users-info-text>
-    <div class="col-4 search-wrapper">
+  <div class="Users">
+    <h1>Emergency search</h1>
+    <users-info-text class="col-12"></users-info-text>
+    <div class="col-12 col-sm-8 col-lg-4 search-wrapper">
       <i class="fas fa-search"></i>
       <st-input placeholder="Search for a person" v-model="search"></st-input>
     </div>
@@ -32,7 +32,7 @@
                 >Latitude: {{ user.lat }}, Longitude: {{ user.long }}</span
               >
             </td>
-            <td>{{ user.comment }}</td>
+            <td class="comment-info">{{ user.comment }}</td>
             <td>
               <router-link
                 :to="{ name: 'RegisterPosition' }"
@@ -45,41 +45,45 @@
         </tbody>
       </table>
     </div>
-    <div class="mobile-table-wrapper d-sm-block">
-      <div class="mobile-item" v-for="user in filteredUsers" :key="user._id">
-        <div class="row">
-          <div class="col-4 bold">
+    <div class="mobile-table-wrapper d-md-none">
+      <div
+        class="mobile-item"
+        :class="[isCurrentUser(user._id) ? 'current-user' : '']"
+        v-for="user in filteredUsers"
+        :key="user._id"
+      >
+        <div class="row" style="margin: 0;">
+          <div class="col-4">
             <p>Name:</p>
           </div>
-          <div class="col-8  ">
+          <div class="col-8">
             <p>{{ user.name }}</p>
           </div>
-          <div class="col-4 bold">
-            <p>Latest Update:</p>
+          <div class="col-4">
+            <p>Update:</p>
           </div>
-          <div class="col-8  ">
+          <div class="col-8">
             <p>{{ user.time }}</p>
           </div>
-          <div class="col-4 bold">
+          <div class="col-4">
             <p>Location:</p>
           </div>
-          <div class="col-8  ">
+          <div class="col-8">
             <p v-if="user.location">{{ user.location.slice(7) }}</p>
           </div>
-          <div class="col-4 bold">
+          <div class="col-4">
             <p>Message:</p>
           </div>
-          <div class="col-8  ">
+          <div class="col-8 comment-info">
             <p>{{ user.comment }}</p>
           </div>
-          <div class="col-4 bold">
-            <router-link
-              :to="{ name: 'RegisterPosition' }"
-              v-if="isCurrentUser(user._id)"
-            >
-              <i class="fas fa-edit"></i>
-            </router-link>
-          </div>
+          <sos-button
+            v-if="isCurrentUser(user._id)"
+            class="col-10"
+            primary
+            @click="toRegisterPosition"
+            >Edit</sos-button
+          >
         </div>
       </div>
     </div>
@@ -156,6 +160,9 @@ export default {
 
       let decodedToken = VueJwtDecode.decode(this.auth);
       return decodedToken._id === id;
+    },
+    toRegisterPosition() {
+      this.$router.push({ name: "RegisterPosition" });
     }
   }
 };
@@ -166,6 +173,10 @@ export default {
   h1 {
     margin-bottom: 30px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 30px;
+    }
   }
   .search-wrapper {
     margin: 0 auto;
@@ -205,7 +216,6 @@ export default {
       tbody {
         tr {
           text-align: left;
-          border-top: 1px solid #d6d3d0;
 
           &:last-child {
             td {
@@ -262,7 +272,7 @@ export default {
           }
 
           &:nth-child(odd) {
-            background: #e5e5e5;
+            background: #eeeeee;
           }
           td {
             padding: 10px;
@@ -271,6 +281,36 @@ export default {
             }
           }
         }
+      }
+    }
+  }
+
+  .mobile-table-wrapper {
+    margin-top: 40px;
+    .mobile-item {
+      &.current-user {
+        background: #c8e6c9 !important;
+      }
+      margin: 0px;
+      background-color: #fff;
+      &:nth-child(odd) {
+        background: #e5e5e5;
+      }
+      .col-8 {
+        text-align: left;
+      }
+      .comment-info {
+        p {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+      p {
+        margin: 10px 0px;
+      }
+      button {
+        margin: 10px auto 20px auto;
       }
     }
   }

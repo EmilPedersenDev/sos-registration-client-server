@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
+      <div class="col-sm-12 col-md-10 col-lg-6 login-wrapper">
         <form @submit.prevent="loginUser">
           <div class="row">
             <div class="col-12">
@@ -21,32 +21,66 @@
             </div>
           </div>
           <div class="row email-container">
-            <div class="col-12 ">
-              <st-form-group label="Email">
+            <div class="col-12">
+              <st-form-group
+                label="Email"
+                :invalid="$v.login.email.$invalid && $v.login.email.$dirty"
+                :required="true"
+              >
                 <st-input
+                  :blur="$v.login.email.$touch"
                   type="text"
                   placeholder="Email"
                   v-model="login.email"
+                  :class="{ invalid: $v.login.email.$invalid }"
                 ></st-input>
+                <span class="form-group-error" v-if="!$v.login.email.required"
+                  >Required</span
+                >
+                <span class="form-group-error" v-if="!$v.login.email.email"
+                  >Not a valid email</span
+                >
               </st-form-group>
             </div>
           </div>
 
           <div class="row password-container">
-            <div class="col-12 ">
-              <st-form-group label="Password">
+            <div class="col-12">
+              <st-form-group
+                label="Password"
+                :invalid="
+                  $v.login.password.$invalid && $v.login.password.$dirty
+                "
+                :required="true"
+              >
                 <st-input
+                  :blur="$v.login.password.$touch"
                   type="password"
                   placeholder="Password"
                   v-model="login.password"
                 ></st-input>
+                <span
+                  class="form-group-error"
+                  v-if="!$v.login.password.required"
+                  >Required</span
+                >
+                <span
+                  class="form-group-error"
+                  v-if="!$v.login.password.minLength"
+                  >Min Length 8</span
+                >
+                <span
+                  class="form-group-error"
+                  v-if="!$v.login.password.maxLength"
+                  >Max Length 50</span
+                >
               </st-form-group>
             </div>
           </div>
           <p>
             <router-link to="/register">Register here</router-link>
           </p>
-          <sos-button secondary large type="submit">
+          <sos-button secondary large type="submit" :disabled="$v.$invalid">
             Sign in
           </sos-button>
         </form>
@@ -58,6 +92,12 @@
 import Api from "../../services/Api";
 import sweetAlert from "sweetalert";
 import { mapActions } from "vuex";
+import {
+  required,
+  maxLength,
+  minLength,
+  email
+} from "vuelidate/lib/validators";
 export default {
   data() {
     return {
@@ -66,6 +106,19 @@ export default {
         password: ""
       }
     };
+  },
+  validations: {
+    login: {
+      email: {
+        email,
+        required
+      },
+      password: {
+        maxLength: maxLength(50),
+        minLength: minLength(8),
+        required
+      }
+    }
   },
   methods: {
     ...mapActions({ user: "setUser" }),
@@ -88,7 +141,7 @@ export default {
             });
         }
       } catch (err) {
-        swal("Error", "Something Went Wrong", "error");
+        swal("Error", "Email or password invalid", "error");
         console.log(err.response);
       }
     }
@@ -105,57 +158,67 @@ input:-webkit-autofill:active {
 }
 
 .container {
-  form {
-    text-align: center;
-    margin-top: 70px;
-    height: auto;
-    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
-    border-radius: 20px;
-    padding: 50px;
-    background-color: #fff;
-    h3 {
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
+  .login-wrapper {
+    margin: 0 auto;
+    form {
+      text-align: center;
+      margin-top: 70px;
+      height: auto;
+      box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      padding: 50px;
+      background-color: #fff;
+      @media (max-width: 768px) {
+        margin: 10px 0px 30px;
+        padding: 50px 20px;
+      }
+      h3 {
+        margin-bottom: 20px;
+        font-weight: 700;
+        @media (max-width: 768px) {
+          font-size: 22px;
+        }
+      }
 
-    .login-information {
-      p {
-        text-align: center;
-        margin-bottom: 25px;
-        a {
-          color: #699e53;
-          transition: all 0.3s ease;
-          &:hover {
-            text-decoration: none;
-            color: #80c565;
+      .login-information {
+        p {
+          text-align: center;
+          margin-bottom: 25px;
+          a {
+            color: #699e53;
+            transition: all 0.3s ease;
+            &:hover {
+              text-decoration: none;
+              color: #80c565;
+            }
           }
         }
       }
-    }
 
-    p {
-      margin: 20px 0px;
-      text-align: left;
-    }
-
-    a {
-      font-weight: 700;
-      transition: all 0.3s ease;
-      &:hover {
-        text-decoration: none;
-        color: #80c565;
+      p {
+        margin: 20px 0px;
+        text-align: left;
       }
-    }
 
-    .sos-button {
-      margin-top: 10px;
-    }
+      a {
+        font-weight: 700;
+        transition: all 0.3s ease;
+        &:hover {
+          text-decoration: none;
+          color: #80c565;
+        }
+      }
 
-    .email-container {
-      margin-bottom: 20px;
-    }
-    input {
-      background-color: #fff;
+      .sos-button {
+        margin-top: 10px;
+      }
+
+      .email-container {
+        margin-bottom: 20px;
+      }
+      input {
+        background-color: #fff;
+      }
     }
   }
 }

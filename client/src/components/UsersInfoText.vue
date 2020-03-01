@@ -1,7 +1,8 @@
 <template>
   <div class="users-info-text">
     <h5 :class="{ notAuthenticated: !auth }">
-      Here you can see all the people that as of now is in some kind of danger.
+      Here you can see all the people that as of now is in some kind of an
+      emergency situation.
     </h5>
     <router-link v-if="auth" :to="{ name: 'RegisterPosition' }">
       {{ LinkText }}

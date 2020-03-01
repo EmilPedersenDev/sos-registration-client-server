@@ -74,6 +74,11 @@ button {
     border-color: rgba(30, 139, 195, 1);
     cursor: pointer;
   }
+  &:disabled {
+    opacity: 0.5;
+    background-color: #6e6054 !important;
+    border-color: #6e6054 !important;
+  }
 
   &.primary {
     color: rgba(30, 44, 94, 1);

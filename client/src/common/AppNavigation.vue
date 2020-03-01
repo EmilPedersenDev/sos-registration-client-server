@@ -1,10 +1,10 @@
 <template>
   <div class="nav" id="fading" :class="{ 'no-margin': isRegisterPosition }">
     <div class="left-nav col-2 col-md-4">
-      <router-link to="/users" class="d-none d-md-block">
+      <router-link to="/users" class="img-svg d-none d-sm-block">
         <img src="../assets/logo.svg" alt />
       </router-link>
-      <router-link to="/users" class="img-png">
+      <router-link to="/users" class="img-png d-sm-none">
         <img src="../assets/cutlogo.png" alt />
       </router-link>
       <div class="user-info"></div>
@@ -101,23 +101,26 @@ export default {
     padding-left: 100px;
     height: 110px;
 
-    .img-png {
-      display: none;
+    @media (max-width: 768px) {
+      padding-left: 50px;
+    }
+    @media (max-width: 576px) {
+      padding-left: 10px;
     }
 
-    @media (max-width: 768px) {
-      padding: 0px;
-      .img-png {
-        display: block;
-        img {
-          width: 50px;
+    .img-svg {
+      img {
+        width: 180px;
+        @media (max-width: 768px) {
+          width: 150px;
         }
       }
     }
-    img {
-      width: 180px;
-      @media (max-width: 768px) {
-        width: 150px;
+
+    .img-png {
+      img {
+        width: 50px;
+        margin-left: 10px;
       }
     }
   }
@@ -127,9 +130,16 @@ export default {
     justify-content: flex-end;
     padding-right: 100px;
     @media (max-width: 768px) {
+      padding-right: 40px;
+    }
+    @media (max-width: 576px) {
       padding: 0px;
-      a {
-        font-size: 12px;
+    }
+
+    button {
+      @media (max-width: 576px) {
+        padding: 10px 20px;
+        margin-right: 10px;
       }
     }
 
@@ -138,6 +148,18 @@ export default {
       margin: 0;
       li {
         margin-right: 30px;
+        @media (max-width: 780px) {
+          margin-right: 20px;
+          a {
+            font-size: 16px;
+          }
+        }
+        @media (max-width: 576px) {
+          margin-right: 10px;
+          a {
+            font-size: 14px;
+          }
+        }
       }
     }
   }

@@ -1,5 +1,6 @@
 .st-form-group {
   margin-top: 16px;
+  text-align: left;
 
   &.required {
     label:after {
@@ -12,13 +13,19 @@
     display: inline-block;
   }
 
-  &.invalid .form-group-error {
-    display: block;
-    color: #cc4039;
+  &.invalid {
+    .form-group-error {
+      display: block;
+      color: #cc4039 !important;
+    }
+  }
+
+  &.other-invalid {
+    margin-top: 0px;
   }
 
   .form-group-error::before {
-    background-image: url(../assets/icons/varning.png);
+    background-image: url("~@/assets/icons/varning.png");
     background-repeat: no-repeat;
     background-size: 14px 14px;
     background-position-y: 2px;

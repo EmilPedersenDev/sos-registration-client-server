@@ -1,6 +1,7 @@
 @import "./modal.scss";
 @import "./card.scss";
 @import "./input.scss";
+@import "./form-group.scss";
 
 input,
 select,
@@ -21,9 +22,7 @@ textarea {
   }
 
   &.invalid {
-    border-color: #cc4039;
-    border-width: 2px;
-    color: #cc4039;
+    margin: 0px 0px !important;
   }
 
   &:disabled {
@@ -51,6 +50,14 @@ p,
 label,
 a {
   color: #001e3c;
+}
+
+.swal-button {
+  background-color: #001e3c;
+}
+
+.swal-button:not([disabled]):hover {
+  background-color: rgb(17, 29, 71);
 }
 
 label {

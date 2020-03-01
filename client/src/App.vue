@@ -51,6 +51,9 @@ export default {
     background: linear-gradient(rgba(255, 255, 255, 0.2)),
       url("~@/assets/forest1.jpg") no-repeat;
     background-size: cover;
+    @media (max-width: 768px) {
+      background: #fff;
+    }
   }
 
   .fade-enter-active,

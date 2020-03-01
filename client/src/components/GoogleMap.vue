@@ -129,6 +129,9 @@ export default {
       border-bottom-left-radius: 0;
       border: 1px solid #807569;
       border-left: none;
+      @media (max-width: 768px) {
+        padding: 1px 6px !important;
+      }
     }
   }
 }
