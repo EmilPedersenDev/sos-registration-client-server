@@ -205,6 +205,7 @@ input:-webkit-autofill:active {
       }
 
       a {
+        color: #699e53;
         font-weight: 700;
         transition: all 0.3s ease;
         &:hover {

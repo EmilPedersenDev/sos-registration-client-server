@@ -24,7 +24,11 @@ export default {
   computed: {
     ...mapGetters(["authenticated"]),
     isLoginPage() {
-      return this.$route.path === "/" || this.$route.path === "/register";
+      return (
+        this.$route.path === "/" ||
+        this.$route.path === "/register" ||
+        this.$route.path === "/about"
+      );
     }
   },
   watch: {

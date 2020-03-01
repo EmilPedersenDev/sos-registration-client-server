@@ -180,33 +180,26 @@ input:-webkit-autofill:active {
         }
       }
 
-      .login-information {
-        p {
-          text-align: center;
-          margin-bottom: 25px;
-          a {
-            color: #699e53;
-            transition: all 0.3s ease;
-            &:hover {
-              text-decoration: none;
-              color: #80c565;
-            }
-          }
-        }
-      }
-
-      p {
-        margin: 20px 0px;
-        text-align: left;
-      }
-
       a {
+        color: #699e53;
         font-weight: 700;
         transition: all 0.3s ease;
         &:hover {
           text-decoration: none;
           color: #80c565;
         }
+      }
+
+      .login-information {
+        p {
+          text-align: center;
+          margin-bottom: 25px;
+        }
+      }
+
+      p {
+        margin: 20px 0px;
+        text-align: left;
       }
 
       .sos-button {
