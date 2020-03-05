@@ -143,7 +143,7 @@ export default {
   methods: {
     async registerUser() {
       try {
-        let response = await Api().post("/user/register", this.register);
+        let response = await Api().post("/register", this.register);
         let token = response.data.token;
         if (token) {
           localStorage.setItem("jwt", token);

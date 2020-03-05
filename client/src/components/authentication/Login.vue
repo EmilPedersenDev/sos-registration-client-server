@@ -124,7 +124,7 @@ export default {
     ...mapActions({ user: "setUser" }),
     async loginUser() {
       try {
-        let response = await Api().post("/user/login", this.login);
+        let response = await Api().post("/login", this.login);
         let token = response.data.token;
         localStorage.setItem("jwt", token);
 

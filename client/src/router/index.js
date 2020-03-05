@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 
 import Users from "@/components/Users.vue";
 import RegisterPosition from "@/components/RegisterPosition";
-import EditPost from "@/components/EditPost";
 import Login from "@/components/authentication/Login";
 import Register from "@/components/authentication/Register";
 import About from "@/components/About.vue";
@@ -44,14 +43,6 @@ const routes = [
     path: "/users/add-position",
     name: "RegisterPosition",
     component: RegisterPosition,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/posts/:id",
-    name: "EditPost",
-    component: EditPost,
     meta: {
       requiresAuth: true
     }

@@ -212,7 +212,7 @@ export default {
           ).format("YYYY-MM-DD, HH:mm");
 
           Api()
-            .put(`/user/user/${this.user._id}`, this.newPersonModel)
+            .put(`/user/${this.user._id}`, this.newPersonModel)
             .then(result => {
               this.newPersonModel = result.data.user;
               this.$store.commit("setUser", this.newPersonModel);

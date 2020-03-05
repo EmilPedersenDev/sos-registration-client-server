@@ -12,7 +12,7 @@ const actions = {
     let decodedToken = VueJwtDecode.decode(token);
 
     Api()
-      .get(`/user/user/${decodedToken._id}`)
+      .get(`/user/${decodedToken._id}`)
       .then(result => {
         commit("setUser", result.data);
       });

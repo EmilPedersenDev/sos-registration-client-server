@@ -92,7 +92,6 @@
 </template>
 
 <script>
-import PostsService from "@/services/PostsService";
 import VueJwtDecode from "vue-jwt-decode";
 import Api from "../services/Api";
 import { mapGetters } from "vuex";
@@ -149,7 +148,7 @@ export default {
   methods: {
     getUsers() {
       Api()
-        .get("/user/users")
+        .get("/users")
         .then(result => {
           this.users = result.data.users;
         });
