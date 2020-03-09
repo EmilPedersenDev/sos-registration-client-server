@@ -1,5 +1,6 @@
 import VueJwtDecode from "vue-jwt-decode";
 import Api from "../../services/Api";
+import axios from "axios";
 
 const state = {
   user: {},
@@ -11,11 +12,9 @@ const actions = {
     const token = localStorage.getItem("jwt");
     let decodedToken = VueJwtDecode.decode(token);
 
-    Api()
-      .get(`/user/${decodedToken._id}`)
-      .then(result => {
-        commit("setUser", result.data);
-      });
+    axios.get(`api/user/${decodedToken._id}`).then(result => {
+      commit("setUser", result.data);
+    });
   }
 };
 

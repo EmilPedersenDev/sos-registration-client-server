@@ -91,6 +91,7 @@
 <script>
 import Api from "../../services/Api";
 import sweetAlert from "sweetalert";
+import axios from "axios";
 import { mapActions } from "vuex";
 import {
   required,
@@ -124,7 +125,7 @@ export default {
     ...mapActions({ user: "setUser" }),
     async loginUser() {
       try {
-        let response = await Api().post("/login", this.login);
+        let response = await axios.post("api/login", this.login);
         let token = response.data.token;
         localStorage.setItem("jwt", token);
 

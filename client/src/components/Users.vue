@@ -93,6 +93,7 @@
 
 <script>
 import VueJwtDecode from "vue-jwt-decode";
+import axios from "axios";
 import Api from "../services/Api";
 import { mapGetters } from "vuex";
 import UsersInfoText from "./UsersInfoText";
@@ -147,11 +148,9 @@ export default {
   },
   methods: {
     getUsers() {
-      Api()
-        .get("/users")
-        .then(result => {
-          this.users = result.data.users;
-        });
+      axios.get("api/users").then(result => {
+        this.users = result.data.users;
+      });
     },
     isCurrentUser(id) {
       if (!id) return false;

@@ -12,6 +12,8 @@ Vue.use(VueGoogleMaps, {
   }
 });
 
+console.log(process.env);
+
 Vue.use(Vuelidate);
 
 import "../src/common";
