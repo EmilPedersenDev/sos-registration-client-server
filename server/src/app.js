@@ -29,6 +29,12 @@ mongoose
     console.log(`Unable to connect with database ${error}`);
   });
 
+var dbConnect = mongoose.connection;
+dbConnect.on("error", console.error.bind(console, "connection error"));
+dbConnect.once("open", function(callback) {
+  console.log("Connection Succeeded");
+});
+
 //Handle Production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(__dirname + "/public"));
@@ -39,6 +45,8 @@ if (process.env.NODE_ENV === "production") {
 //   res.sendFile(path.join(__dirname, "public/index.html"));
 // });
 
-app.listen(process.env.PORT || 8081, () => {
-  console.log("Running on Port");
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+  console.log(`Running on Port ${port}`);
 });
