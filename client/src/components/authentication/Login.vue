@@ -125,7 +125,8 @@ export default {
     ...mapActions({ user: "setUser" }),
     async loginUser() {
       try {
-        let response = await axios.post("api/login", this.login);
+        let url = "api/login";
+        let response = await axios.post(url, this.login);
         let token = response.data.token;
         localStorage.setItem("jwt", token);
 
