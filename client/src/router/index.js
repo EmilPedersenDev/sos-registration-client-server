@@ -40,7 +40,7 @@ const routes = [
     component: About
   },
   {
-    path: "/users/add-position",
+    path: "/add-position",
     name: "RegisterPosition",
     component: RegisterPosition,
     meta: {

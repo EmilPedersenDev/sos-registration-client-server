@@ -45,7 +45,7 @@ export default {
   computed: {
     ...mapGetters(["authenticated"]),
     isRegisterPosition() {
-      return this.$route.path === "/users/add-position";
+      return this.$route.path === "/add-position";
     }
   },
   methods: {
