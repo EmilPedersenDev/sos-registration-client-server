@@ -211,8 +211,10 @@ export default {
             "ddd, DD MMM YYYY HH:mm:ss ZZ"
           ).format("YYYY-MM-DD, HH:mm");
 
+          let userUrl = `api/user/${this.user._id}`;
+
           axios
-            .put(`api/user/${this.user._id}`, this.newPersonModel)
+            .put(userUrl, this.newPersonModel)
             .then(result => {
               this.newPersonModel = result.data.user;
               this.$store.commit("setUser", this.newPersonModel);
