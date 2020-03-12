@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const userRoutes = require("../routes/user");
-// const path = require("path");
+const path = require("path");
 var mongoose = require("mongoose");
 
 const app = express();
@@ -12,9 +12,9 @@ app.use(morgan("combined"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(userRoutes);
+app.use("/api", userRoutes);
 
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../public")));
 
 const db = require("../config/keys").mongoURI;
 
@@ -35,15 +35,9 @@ dbConnect.once("open", function(callback) {
   console.log("Connection Succeeded");
 });
 
-//Handle Production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(__dirname + "/public"));
-
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
-}
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
 const port = process.env.PORT || 8080;
 
