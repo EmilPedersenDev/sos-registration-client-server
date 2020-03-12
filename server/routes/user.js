@@ -6,7 +6,6 @@ const User = require("../models/user");
 
 router.post("/register", userController.registerNewUser);
 router.post("/login", userController.loginUser);
-router.get("/me", auth, userController.getUserDetails);
 
 router.get("/users", (req, res) => {
   User.find({}, "name email comment lat long location time", function(
