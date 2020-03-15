@@ -1,7 +1,13 @@
-// import axios from "axios";
+import axios from "axios";
 
-// export default () => {
-//   return axios.create({
-//     baseURL: process.env.BASE_URL || `http://localhost:8081`
-//   });
-// };
+export default () => {
+  let url;
+  if (process.env.NODE === "production") {
+    url = "";
+  } else {
+    url = "http://localhost:8081";
+  }
+  return axios.create({
+    baseURL: url
+  });
+};

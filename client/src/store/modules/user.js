@@ -12,9 +12,11 @@ const actions = {
     const token = localStorage.getItem("jwt");
     let decodedToken = VueJwtDecode.decode(token);
 
-    axios.get(`api/user/${decodedToken._id}`).then(result => {
-      commit("setUser", result.data);
-    });
+    Api()
+      .get(`/user/${decodedToken._id}`)
+      .then(result => {
+        commit("setUser", result.data);
+      });
   }
 };
 

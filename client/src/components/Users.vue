@@ -148,9 +148,11 @@ export default {
   },
   methods: {
     getUsers() {
-      axios.get("api/users").then(result => {
-        this.users = result.data.users;
-      });
+      Api()
+        .get("/users")
+        .then(result => {
+          this.users = result.data.users;
+        });
     },
     isCurrentUser(id) {
       if (!id) return false;

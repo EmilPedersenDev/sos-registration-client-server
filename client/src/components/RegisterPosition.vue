@@ -221,10 +221,8 @@ export default {
         });
     },
     updateUser() {
-      const userUrl = `api/user/${this.user._id}`;
-
-      axios
-        .put(userUrl, this.newPersonModel)
+      Api()
+        .put(`/user/${this.user._id}`, this.newPersonModel)
         .then(result => {
           this.newPersonModel = result.data.user;
           this.$store.commit("setUser", this.newPersonModel);
