@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ background: isLoginPage }">
+  <div id="app" :class="{ background: hasBackground }">
     <app-navigation></app-navigation>
     <transition name="fade" mode="out-in">
       <router-view />
@@ -23,12 +23,8 @@ export default {
   },
   computed: {
     ...mapGetters(["authenticated"]),
-    isLoginPage() {
-      return (
-        this.$route.path === "/" ||
-        this.$route.path === "/register" ||
-        this.$route.path === "/about"
-      );
+    hasBackground() {
+      return this.$route.path === "/users";
     }
   },
   watch: {
@@ -42,22 +38,27 @@ export default {
 </script>
 
 <style lang="scss">
+body,
+html {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(255, 255, 255, 0.2)),
+    url("~@/assets/forest1.jpg") no-repeat center center fixed;
+  background-size: cover;
+  @media (max-width: 768px) {
+    background: #fff;
+  }
+}
 #app {
   font-family: "Montserrat", "Avenir", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 100%;
-  height: 100%;
+  min-height: 100%;
 
   &.background {
-    background: linear-gradient(rgba(255, 255, 255, 0.2)),
-      url("~@/assets/forest1.jpg") no-repeat;
-    background-size: cover;
-    @media (max-width: 768px) {
-      background: #fff;
-    }
+    background: #fff;
   }
 
   .fade-enter-active,

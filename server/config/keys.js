@@ -1,3 +1,4 @@
+// Connection to db
 if (process.env.NODE_ENV === "production") {
   module.exports = {
     mongoURI:

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row inner-container">
       <div class="col-sm-12 col-md-10 col-lg-6 login-wrapper">
         <form @submit.prevent="loginUser">
           <div class="row">
@@ -123,12 +123,10 @@ export default {
   },
   methods: {
     ...mapActions({ user: "setUser" }),
+
     async loginUser() {
       try {
-        let url = "/login";
-        console.log(Api());
-
-        let response = await Api().post(url, this.login);
+        let response = await Api().post("/login", this.login);
         let token = response.data.token;
         localStorage.setItem("jwt", token);
 
@@ -162,59 +160,64 @@ input:-webkit-autofill:active {
 }
 
 .container {
-  .login-wrapper {
-    margin: 0 auto;
-    form {
-      text-align: center;
-      margin-top: 70px;
-      height: auto;
-      box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      padding: 50px;
-      background-color: #fff;
-      @media (max-width: 768px) {
-        margin: 10px 0px 30px;
-        padding: 50px 20px;
-      }
-      h3 {
-        margin-bottom: 20px;
-        font-weight: 700;
-        @media (max-width: 768px) {
-          font-size: 22px;
-        }
-      }
+  .inner-container {
+    margin: 0px;
 
-      a {
-        color: #699e53;
-        font-weight: 700;
-        transition: all 0.3s ease;
-        &:hover {
-          text-decoration: none;
-          color: #80c565;
-        }
-      }
-
-      .login-information {
-        p {
-          text-align: center;
-          margin-bottom: 25px;
-        }
-      }
-
-      p {
-        margin: 20px 0px;
-        text-align: left;
-      }
-
-      .sos-button {
-        margin-top: 10px;
-      }
-
-      .email-container {
-        margin-bottom: 20px;
-      }
-      input {
+    .login-wrapper {
+      margin: 0 auto;
+      padding: 0px 10px;
+      form {
+        text-align: center;
+        margin: 50px 0px;
+        height: auto;
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
+        border-radius: 20px;
+        padding: 50px;
         background-color: #fff;
+        @media (max-width: 768px) {
+          margin: 10px 0px 30px;
+          padding: 50px 20px;
+        }
+        h3 {
+          margin-bottom: 20px;
+          font-weight: 700;
+          @media (max-width: 768px) {
+            font-size: 22px;
+          }
+        }
+
+        a {
+          color: #699e53;
+          font-weight: 700;
+          transition: all 0.3s ease;
+          &:hover {
+            text-decoration: none;
+            color: #80c565;
+          }
+        }
+
+        .login-information {
+          p {
+            text-align: center;
+            margin-bottom: 25px;
+          }
+        }
+
+        p {
+          margin: 20px 0px;
+          text-align: left;
+        }
+
+        .sos-button {
+          margin-top: 10px;
+        }
+
+        .email-container {
+          margin-bottom: 20px;
+        }
+        input {
+          background-color: #fff;
+        }
       }
     }
   }

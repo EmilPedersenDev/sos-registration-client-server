@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row inner-container">
       <div class="col-sm-12 col-md-10 col-lg-6 register-wrapper">
         <form @submit.prevent="registerUser">
           <div class="row">
@@ -177,51 +177,56 @@ input:-webkit-autofill:active {
 }
 
 .container {
-  .register-wrapper {
-    margin: 0 auto;
-    form {
-      text-align: center;
-      margin-top: 70px;
-      height: auto;
-      box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      padding: 50px;
-      background-color: #fff;
-      @media (max-width: 768px) {
-        margin: 10px 0px 30px;
-        padding: 50px 20px;
-      }
+  .inner-container {
+    margin: 0px;
+    .register-wrapper {
+      margin: 0 auto;
+      padding: 0px 10px;
 
-      h3 {
-        margin-bottom: 20px;
-        font-weight: 700;
-        @media (max-width: 768px) {
-          font-size: 22px;
-        }
-      }
-
-      p {
-        margin: 20px 0px;
-        text-align: left;
-      }
-
-      a {
-        color: #699e53;
-        font-weight: 700;
-        transition: all 0.3s ease;
-        &:hover {
-          text-decoration: none;
-          color: #80c565;
-        }
-      }
-
-      .sos-button {
-        margin-top: 10px;
-      }
-
-      input {
-        margin-bottom: 20px;
+      form {
+        text-align: center;
+        margin: 50px 0px;
+        height: auto;
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
+        border-radius: 20px;
+        padding: 50px;
         background-color: #fff;
+        @media (max-width: 768px) {
+          margin: 10px 0px 30px;
+          padding: 50px 20px;
+        }
+
+        h3 {
+          margin-bottom: 20px;
+          font-weight: 700;
+          @media (max-width: 768px) {
+            font-size: 22px;
+          }
+        }
+
+        p {
+          margin: 20px 0px;
+          text-align: left;
+        }
+
+        a {
+          color: #699e53;
+          font-weight: 700;
+          transition: all 0.3s ease;
+          &:hover {
+            text-decoration: none;
+            color: #80c565;
+          }
+        }
+
+        .sos-button {
+          margin-top: 10px;
+        }
+
+        input {
+          margin-bottom: 20px;
+          background-color: #fff;
+        }
       }
     }
   }

@@ -36,82 +36,82 @@
 </template>
 
 <script>
-  export default {
-    name: "st-modal",
+export default {
+  name: "st-modal",
 
-    props: {
-      onClose: {
-        type: Function
-      },
-      isLoading: {
-        type: Boolean,
-        default: false
-      },
-      loadingMessage: {
-        type: String
-      },
-      large: {
-        type: Boolean,
-        default: false
-      },
-      mega: {
-        type: Boolean,
-        default: false
-      },
-      error: {
-        type: Object
-      },
-      width: {
-        type: Number,
-        default: 0
-      }
+  props: {
+    onClose: {
+      type: Function
     },
-
-    computed: {
-      classList: function() {
-        return ["st-modal", this.large && "lg", this.small && "sm"];
-      },
-      widthSize: function() {
-        if (this.mega) return "mega-width";
-        if (!this.large) return "md-width";
-        if (this.large) return "lg-width";
-      },
-      style: function() {
-        if (this.width > 0) {
-          return `max-width: ${this.width}px`;
-        }
-      },
-      isHidden: function() {
-        return this.isLoading ? "hidden" : "";
-      },
-      modalMaxWidth: function() {
-        if (this.width > 0) {
-          return this.width;
-        }
-        if (this.mega) return 1412;
-        if (!this.large) return 576;
-        if (this.large) return 776;
-      }
+    isLoading: {
+      type: Boolean,
+      default: false
     },
-
-    methods: {
-      close: function() {
-        if (this.onClose) {
-          this.onClose();
-        }
-      }
+    loadingMessage: {
+      type: String
     },
-    mounted() {
-      document.body.classList.add("modal-opened");
-      let modalHeight = this.$refs.mymodal.scrollHeight;
-      let windowHeight = window.innerHeight;
-
-      //If scrollbar, add padding to body to avoid jitter
-      if (modalHeight > windowHeight) document.body.style.paddingRight = "17px";
+    large: {
+      type: Boolean,
+      default: false
     },
-    beforeDestroy() {
-      document.body.classList.remove("modal-opened");
-      document.body.style.removeProperty("padding-right");
+    mega: {
+      type: Boolean,
+      default: false
+    },
+    error: {
+      type: Object
+    },
+    width: {
+      type: Number,
+      default: 0
     }
-  };
+  },
+
+  computed: {
+    classList: function() {
+      return ["st-modal", this.large && "lg", this.small && "sm"];
+    },
+    widthSize: function() {
+      if (this.mega) return "mega-width";
+      if (!this.large) return "md-width";
+      if (this.large) return "lg-width";
+    },
+    style: function() {
+      if (this.width > 0) {
+        return `max-width: ${this.width}px`;
+      }
+    },
+    isHidden: function() {
+      return this.isLoading ? "hidden" : "";
+    },
+    modalMaxWidth: function() {
+      if (this.width > 0) {
+        return this.width;
+      }
+      if (this.mega) return 1412;
+      if (!this.large) return 576;
+      if (this.large) return 776;
+    }
+  },
+
+  methods: {
+    close: function() {
+      if (this.onClose) {
+        this.onClose();
+      }
+    }
+  },
+  mounted() {
+    document.body.classList.add("modal-opened");
+    let modalHeight = this.$refs.mymodal.scrollHeight;
+    let windowHeight = window.innerHeight;
+
+    //If scrollbar, add padding to body to avoid jitter.
+    if (modalHeight > windowHeight) document.body.style.paddingRight = "17px";
+  },
+  beforeDestroy() {
+    document.body.classList.remove("modal-opened");
+    document.body.style.removeProperty("padding-right");
+  }
+};
 </script>
