@@ -17,42 +17,39 @@ const ifNotAuthenticated = (to, from, next) => {
   next();
 };
 
-const routes = [
-  {
-    path: "/",
-    name: "Login",
-    component: Login,
-    beforeEnter: ifNotAuthenticated
-  },
-  {
-    path: "/register",
-    name: "Register",
-    component: Register
-  },
-  {
-    path: "/users",
-    name: "Users",
-    component: Users
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: About
-  },
-  {
-    path: "/add-position",
-    name: "RegisterPosition",
-    component: RegisterPosition,
-    meta: {
-      requiresAuth: true
-    }
-  }
-];
-
-const router = new VueRouter({
-  mode: "history",
+let router = new VueRouter({
   base: process.env.BASE_URL,
-  routes
+  routes: [
+    {
+      path: "/",
+      name: "Login",
+      component: Login,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: Register
+    },
+    {
+      path: "/users",
+      name: "Users",
+      component: Users
+    },
+    {
+      path: "/about",
+      name: "About",
+      component: About
+    },
+    {
+      path: "/add-position",
+      name: "RegisterPosition",
+      component: RegisterPosition,
+      meta: {
+        requiresAuth: true
+      }
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {
