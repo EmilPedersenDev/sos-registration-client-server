@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row inner-container">
-      <div class="col-sm-12 col-md-10 col-lg-6 login-wrapper">
+      <div class="col-sm-12 col-md-10 col-lg-7 col-xl-6 login-wrapper">
         <form @submit.prevent="loginUser">
           <div class="row">
             <div class="col-12">
@@ -81,7 +81,8 @@
             <router-link to="/register">Register here</router-link>
           </p>
           <sos-button secondary large type="submit" :disabled="$v.$invalid">
-            Sign in
+            <span v-if="!isLoading"> Sign in</span>
+            <div class="spinner" v-else></div>
           </sos-button>
         </form>
       </div>
@@ -97,34 +98,36 @@ import {
   required,
   maxLength,
   minLength,
-  email
+  email,
 } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
       login: {
         email: "",
-        password: ""
-      }
+        password: "",
+      },
+      isLoading: false,
     };
   },
   validations: {
     login: {
       email: {
         email,
-        required
+        required,
       },
       password: {
         maxLength: maxLength(50),
         minLength: minLength(8),
-        required
-      }
-    }
+        required,
+      },
+    },
   },
   methods: {
     ...mapActions({ user: "setUser" }),
 
     async loginUser() {
+      this.isLoading = true;
       try {
         let response = await Api().post("/login", this.login);
         let token = response.data.token;
@@ -135,19 +138,23 @@ export default {
           this.$store.commit("setToken", token);
 
           this.user()
-            .then(result => {
+            .then((result) => {
               this.$router.push("/users");
             })
-            .catch(error => {
-              console.error(error);
+            .catch((error) => {
+              throw new Error(error.statusText);
+            })
+            .finally(() => {
+              this.isLoading = false;
             });
         }
       } catch (err) {
+        this.isLoading = false;
         swal("Error", "Email or password invalid", "error");
-        console.log(err.response);
+        throw new Error(err.response);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

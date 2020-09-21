@@ -8,7 +8,7 @@
           emergency situations. You can search after people and get their
           whereabouts, latest updates, comments etc. <br /><br />
 
-          If you wish to search after people, please go to
+          If you wish to search after people, please go to <br />
           <router-link to="/users">Search People</router-link>.
 
           <br /><br />
@@ -27,20 +27,26 @@ export default {};
 <style lang="scss">
 .container {
   padding: 10px;
+  @media (max-width: 768px) {
+    padding-top: 0px;
+  }
   .about-wrapper {
     margin: 60px auto;
     box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
     border-radius: 20px;
     background-color: #fff;
-    padding: 40px;
+    padding: 50px;
     @media (max-width: 768px) {
-      padding: 30px;
-      margin: 20px 0px 30px;
+      padding: 30px 20px;
+      margin: 0px 0px 30px;
+      h1 {
+        font-size: 30px;
+      }
     }
 
     .about-info {
       p {
-        text-align: left;
+        text-align: center;
       }
       a {
         color: #699e53;

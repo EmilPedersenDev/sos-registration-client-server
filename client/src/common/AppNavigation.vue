@@ -1,6 +1,6 @@
 <template>
   <div class="nav" id="fading" :class="{ 'no-margin': isRegisterPosition }">
-    <div class="left-nav col-2 col-md-4">
+    <div class="left-nav col-6 col-md-4">
       <router-link to="/users" class="img-svg d-none d-sm-block">
         <img src="../assets/logo.svg" alt />
       </router-link>
@@ -9,19 +9,66 @@
       </router-link>
       <div class="user-info"></div>
     </div>
-    <div class="right-nav col-10 col-md-8">
+    <div class="right-nav col-6 col-md-8">
       <ul>
-        <li>
+        <li class="no-mobile-view">
           <router-link to="/users">Search People</router-link>
         </li>
-        <li>
+        <li class="no-mobile-view">
           <router-link to="/about">About Us</router-link>
         </li>
+        <li class="no-desktop-view">
+          <i v-if="!isToggled" class="fas fa-bars" @click="toggle(true)"></i>
+        </li>
       </ul>
-      <sos-button v-if="authenticated" primary medium @click="logout"
+      <sos-button
+        v-if="authenticated"
+        class="no-mobile-view"
+        primary
+        medium
+        @click="logout"
         >Logout</sos-button
       >
-      <sos-button v-else secondary medium @click="login">Login</sos-button>
+      <sos-button v-else class="no-mobile-view" secondary medium @click="login"
+        >Login</sos-button
+      >
+    </div>
+    <div
+      :style="menuHeight"
+      :class="[
+        isToggled ? 'dropdown-wrapper-active' : 'dropdown-content-inactive',
+      ]"
+    >
+      <i v-if="isToggled" class="fas fa-times" @click="toggle"></i>
+
+      <ul>
+        <li @click="toggle">
+          <router-link to="/users">Search People</router-link>
+        </li>
+        <li @click="toggle">
+          <router-link to="/about">About Us</router-link>
+        </li>
+        <li @click="toggle">
+          <sos-button
+            v-if="authenticated"
+            class="no-mobile-view"
+            tretton
+            medium
+            @click="logout"
+            >Logout</sos-button
+          >
+        </li>
+        <li @click="toggle">
+          <sos-button
+            v-if="!authenticated"
+            class="no-mobile-view"
+            tretton
+            medium
+            @click="login"
+            >Login</sos-button
+          >
+        </li>
+      </ul>
     </div>
     <logout-modal v-if="showLogoutModal" :close="closeModal"></logout-modal>
   </div>
@@ -35,22 +82,40 @@ export default {
   name: "app-navigation",
   data() {
     return {
-      isDropdownActive: false,
-      showLogoutModal: false
+      showLogoutModal: false,
+      isToggled: false,
+      screenHeight: 0,
     };
   },
+  mounted() {
+    this.screenHeight = window.innerHeight;
+
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
+  },
   components: {
-    LogoutModal
+    LogoutModal,
   },
   computed: {
     ...mapGetters(["authenticated"]),
     isRegisterPosition() {
       return this.$route.path === "/add-position";
-    }
+    },
+    menuHeight() {
+      if (this.isToggled) {
+        return `height: ${this.screenHeight}px`;
+      } else {
+        return `height: 0px`;
+      }
+    },
   },
   methods: {
-    toggle() {
-      this.isDropdownActive = !this.isDropdownActive;
+    toggle(bool) {
+      this.isToggled = !this.isToggled;
     },
     closeModal() {
       this.showLogoutModal = false;
@@ -60,8 +125,11 @@ export default {
     },
     login() {
       this.$router.push("/");
-    }
-  }
+    },
+    onResize() {
+      this.screenHeight = window.innerHeight;
+    },
+  },
 };
 </script>
 
@@ -102,10 +170,7 @@ export default {
     height: 110px;
 
     @media (max-width: 768px) {
-      padding-left: 50px;
-    }
-    @media (max-width: 576px) {
-      padding-left: 10px;
+      padding-left: 40px;
     }
 
     .img-svg {
@@ -132,8 +197,20 @@ export default {
     @media (max-width: 768px) {
       padding-right: 40px;
     }
-    @media (max-width: 576px) {
-      padding: 0px;
+
+    .no-mobile-view {
+      @media (max-width: 992px) {
+        display: none;
+      }
+    }
+
+    .no-desktop-view {
+      @media (min-width: 993px) {
+        display: none;
+      }
+      .sub-page {
+        color: black;
+      }
     }
 
     button {
@@ -148,6 +225,9 @@ export default {
       margin: 0;
       li {
         margin-right: 30px;
+        a {
+          font-size: 16px;
+        }
         @media (max-width: 780px) {
           margin-right: 20px;
           a {
@@ -161,6 +241,56 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .fas {
+    width: 20px;
+    font-size: 25px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .dropdown-wrapper-active {
+    position: fixed;
+    z-index: 7;
+    padding: 30px;
+    color: #000;
+    background-color: #29292e;
+    width: 100%;
+    .fa-times {
+      color: #fff;
+      float: right;
+      font-size: 30px;
+    }
+    ul {
+      position: absolute;
+      top: 30%;
+      margin-top: -50px;
+      margin-left: 30px;
+      text-align: start;
+      li {
+        margin: 20px 0px;
+        a {
+          font-size: 24px;
+          color: #fff;
+          &.sub-page-link {
+            color: #fff;
+            &:hover {
+              &::before {
+                background-color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .dropdown-content-inactive {
+    display: none;
+    .sub-page {
+      color: #000;
     }
   }
 }

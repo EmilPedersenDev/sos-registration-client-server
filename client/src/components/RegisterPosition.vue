@@ -1,10 +1,10 @@
 <template>
   <div class="register-position">
-    <div class="col-sm-12 col-md-10 col-lg-6 col-xl-5 location-container">
+    <div class="col-sm-12 col-md-10 col-lg-8 location-container">
       <h1>{{ HeaderText }}</h1>
       <div class="account-info">
         <div class="row justify-content-center">
-          <div class="col-12 ">
+          <div class="col-12">
             <st-form-group
               label="Name"
               :invalid="
@@ -33,12 +33,12 @@
           </div>
         </div>
         <div class="row justify-content-center">
-          <div class="col-12 ">
+          <div class="col-12">
             <st-form-group
               label="Email"
               :invalid="
                 $v.newPersonModel.email.$invalid &&
-                  $v.newPersonModel.email.$dirty
+                $v.newPersonModel.email.$dirty
               "
               :required="true"
               :class="{ 'other-invalid': $v.newPersonModel.name.$invalid }"
@@ -66,7 +66,7 @@
       </div>
       <div class="map">
         <div class="row justify-content-center">
-          <div class="col-12 ">
+          <div class="col-12">
             <st-form-group
               :label="userLocationText"
               :class="{ 'other-invalid': $v.newPersonModel.email.$invalid }"
@@ -78,7 +78,7 @@
       </div>
       <div class="comment">
         <div class="row justify-content-center">
-          <div class="col-12 ">
+          <div class="col-12">
             <st-form-group
               label="Comment"
               :invalid="$v.newPersonModel.comment.$invalid"
@@ -101,7 +101,7 @@
       </div>
       <div class="submit">
         <div class="row justify-content-center">
-          <div class="col-12 ">
+          <div class="col-12">
             <sos-button
               tretton
               large
@@ -131,7 +131,7 @@ import {
   required,
   maxLength,
   minLength,
-  email
+  email,
 } from "vuelidate/lib/validators";
 
 export default {
@@ -146,27 +146,27 @@ export default {
         lat: null,
         long: null,
         location: "",
-        time: null
-      }
+        time: null,
+      },
     };
   },
   validations: {
     newPersonModel: {
       name: {
         maxLength: maxLength(50),
-        required
+        required,
       },
       email: {
         required,
-        email
+        email,
       },
       comment: {
-        maxLength: maxLength(50)
-      }
-    }
+        maxLength: maxLength(50),
+      },
+    },
   },
   components: {
-    GoogleMap
+    GoogleMap,
   },
   mounted() {
     if (this.auth) {
@@ -188,21 +188,21 @@ export default {
       } else {
         return "Update your location";
       }
-    }
+    },
   },
   watch: {
     user(val) {
       if (val) {
         this.setNewPersonModel();
       }
-    }
+    },
   },
   methods: {
     submit() {
       let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.newPersonModel.lat},${this.newPersonModel.long}&key=${googleApiKey}`;
       axios
         .get(url)
-        .then(result => {
+        .then((result) => {
           let city = result.data.plus_code.compound_code;
           this.newPersonModel.location = city;
           let time = new Date();
@@ -213,7 +213,7 @@ export default {
 
           this.updateUser();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         })
         .finally(() => {
@@ -223,11 +223,11 @@ export default {
     updateUser() {
       Api()
         .put(`/user/${this.user._id}`, this.newPersonModel)
-        .then(result => {
+        .then((result) => {
           this.newPersonModel = result.data.user;
           this.$store.commit("setUser", this.newPersonModel);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     },
@@ -255,8 +255,8 @@ export default {
         : null;
       this.newPersonModel.comment = this.user.comment ? this.user.comment : "";
       this.newPersonModel.time = this.user.time ? this.user.time : null;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -277,6 +277,10 @@ export default {
     box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.4);
     border-radius: 20px;
     background-color: #fff;
+    @media (min-width: 1200px) {
+      max-width: 760px;
+    }
+
     @media (max-width: 768px) {
       margin: 20px 0px 30px;
 
@@ -285,6 +289,9 @@ export default {
 
     h1 {
       margin-top: 15px;
+      @media (max-width: 768px) {
+        font-size: 30px;
+      }
     }
 
     textarea {

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row inner-container">
-      <div class="col-sm-12 col-md-10 col-lg-6 register-wrapper">
+      <div class="col-sm-12 col-md-10 col-lg-7 col-xl-6 register-wrapper">
         <form @submit.prevent="registerUser">
           <div class="row">
             <div class="col-12">
@@ -9,7 +9,7 @@
             </div>
           </div>
           <div class="row name-container">
-            <div class="col-12 ">
+            <div class="col-12">
               <st-form-group
                 label="Name"
                 :invalid="$v.register.name.$invalid && $v.register.name.$dirty"
@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="row email-container">
-            <div class="col-12 ">
+            <div class="col-12">
               <st-form-group
                 label="Email"
                 :invalid="
@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="row password-container">
-            <div class="col-12 ">
+            <div class="col-12">
               <st-form-group
                 label="Password"
                 :invalid="
@@ -98,7 +98,8 @@
             <router-link to="/">Back to Login</router-link>
           </p>
           <sos-button secondary large type="submit" :disabled="$v.$invalid">
-            Sign in
+            <span v-if="!isLoading"> Sign in</span>
+            <div class="spinner" v-else></div>
           </sos-button>
         </form>
       </div>
@@ -110,7 +111,7 @@ import {
   required,
   maxLength,
   minLength,
-  email
+  email,
 } from "vuelidate/lib/validators";
 import Api from "../../services/Api";
 import axios from "axios";
@@ -120,42 +121,53 @@ export default {
       register: {
         name: "",
         email: "",
-        password: ""
-      }
+        password: "",
+      },
+      isLoading: false,
     };
   },
   validations: {
     register: {
       name: {
         maxLength: maxLength(50),
-        required
+        required,
       },
       email: {
         required,
-        email
+        email,
       },
       password: {
         maxLength: maxLength(50),
         minLength: minLength(8),
-        required
-      }
-    }
+        required,
+      },
+    },
   },
   methods: {
     async registerUser() {
+      this.isLoading = true;
       try {
         let response = await Api().post("/register", this.register);
         let token = response.data.token;
         if (token) {
           localStorage.setItem("jwt", token);
-          this.$store.commit("setToken", token);
-          this.$store.dispatch("setUser");
-          this.$router.push({ name: "RegisterPosition" });
-          swal("Success", "Registration Was successful", "success");
+          let promises = [];
+          promises.push(this.$store.commit("setToken", token));
+          promises.push(this.$store.dispatch("setUser"));
+          Promise.all(promises)
+            .then((result) => {
+              this.$router.push({ name: "RegisterPosition" });
+              swal("Success", "Registration Was successful", "success");
+            })
+            .finally(() => {
+              this.isLoading = false;
+            });
         } else {
+          this.isLoading = false;
           swal("Error", "Something Went Wrong", "error");
         }
       } catch (err) {
+        this.isLoading = false;
         let error = err.response;
         if (error.status == 409) {
           swal("Error", error.data, "error");
@@ -163,8 +175,8 @@ export default {
           swal("Error", error.data.err.message, "error");
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -224,7 +236,6 @@ input:-webkit-autofill:active {
         }
 
         input {
-          margin-bottom: 20px;
           background-color: #fff;
         }
       }

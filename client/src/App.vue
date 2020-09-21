@@ -42,12 +42,6 @@ body,
 html {
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(255, 255, 255, 0.2)),
-    url("~@/assets/forest1.jpg") no-repeat center center fixed;
-  background-size: cover;
-  @media (max-width: 768px) {
-    background: #fff;
-  }
 }
 #app {
   font-family: "Montserrat", "Avenir", Arial, sans-serif;
@@ -56,6 +50,12 @@ html {
   text-align: center;
   color: #2c3e50;
   min-height: 100%;
+  background: linear-gradient(rgba(255, 255, 255, 0.2)),
+    url("~@/assets/forest1.jpg") no-repeat center center fixed;
+  background-size: cover;
+  @media (max-width: 768px) {
+    background: #fff;
+  }
 
   &.background {
     background: #fff;
