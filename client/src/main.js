@@ -7,9 +7,9 @@ import * as VueGoogleMaps from "vue2-google-maps";
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyC8NXzppZHxsBGIEgFzY8geEB8CyVuoZoA",
-    libraries: "places"
-  }
+    key: process.env.VUE_APP_GMAPS_SITE_KEY,
+    libraries: "places",
+  },
 });
 
 Vue.use(Vuelidate);
@@ -22,5 +22,5 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

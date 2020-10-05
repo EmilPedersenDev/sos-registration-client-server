@@ -1,5 +1,5 @@
 <template>
-  <transition name="modal-fade">
+  <transition name="fade" mode="out-in">
     <div>
       <div class="modal-mask" ref="mymodal" @click="close">
         <div
@@ -12,16 +12,10 @@
             :isLoading="isLoading"
             :width-size="widthSize"
             :style="style"
-            style="pointer-events:auto;"
+            style="pointer-events: auto"
           >
             <div :class="isHidden">
-              <slot name="header">
-                <i
-                  v-if="onClose"
-                  class="fas fa-times closeButton"
-                  @click="close"
-                ></i>
-              </slot>
+              <slot name="header"></slot>
 
               <slot name="body"></slot>
 
@@ -41,65 +35,65 @@ export default {
 
   props: {
     onClose: {
-      type: Function
+      type: Function,
     },
     isLoading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     loadingMessage: {
-      type: String
+      type: String,
     },
     large: {
       type: Boolean,
-      default: false
+      default: false,
     },
     mega: {
       type: Boolean,
-      default: false
+      default: false,
     },
     error: {
-      type: Object
+      type: Object,
     },
     width: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
 
   computed: {
-    classList: function() {
+    classList: function () {
       return ["st-modal", this.large && "lg", this.small && "sm"];
     },
-    widthSize: function() {
+    widthSize: function () {
       if (this.mega) return "mega-width";
       if (!this.large) return "md-width";
       if (this.large) return "lg-width";
     },
-    style: function() {
+    style: function () {
       if (this.width > 0) {
         return `max-width: ${this.width}px`;
       }
     },
-    isHidden: function() {
+    isHidden: function () {
       return this.isLoading ? "hidden" : "";
     },
-    modalMaxWidth: function() {
+    modalMaxWidth: function () {
       if (this.width > 0) {
         return this.width;
       }
       if (this.mega) return 1412;
       if (!this.large) return 576;
       if (this.large) return 776;
-    }
+    },
   },
 
   methods: {
-    close: function() {
+    close: function () {
       if (this.onClose) {
         this.onClose();
       }
-    }
+    },
   },
   mounted() {
     document.body.classList.add("modal-opened");
@@ -112,6 +106,6 @@ export default {
   beforeDestroy() {
     document.body.classList.remove("modal-opened");
     document.body.style.removeProperty("padding-right");
-  }
+  },
 };
 </script>
