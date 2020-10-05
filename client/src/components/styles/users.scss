@@ -75,6 +75,17 @@
                 span {
                   display: inline-block;
                   margin-left: 10px;
+                  position: relative;
+                  &::before {
+                    content: "\f2bd";
+                    font-family: "Font Awesome 5 Free";
+                    position: absolute;
+                    top: -6px;
+                    left: -55px;
+                    display: inline-block;
+                    font-size: 24px;
+                    font-weight: 600;
+                  }
                 }
               }
               &:last-child {

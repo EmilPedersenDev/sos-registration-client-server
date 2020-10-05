@@ -29,10 +29,6 @@
               :class="[isCurrentUser(user._id) ? 'current-user' : 'other-user']"
             >
               <td>
-                <i
-                  class="fas fa-user-circle"
-                  v-if="isCurrentUser(user._id)"
-                ></i>
                 <span>{{ user.name }}</span>
               </td>
               <td>{{ user.time }}</td>
