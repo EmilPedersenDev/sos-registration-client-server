@@ -1,11 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Users from "@/components/Users.vue";
-import RegisterPosition from "@/components/RegisterPosition";
+import Users from "@/components/views/Users.vue";
+import RegisterPosition from "@/components/views/RegisterPosition";
 import Login from "@/components/authentication/Login";
 import Register from "@/components/authentication/Register";
-import About from "@/components/About.vue";
+import About from "@/components/views/About.vue";
 
 Vue.use(VueRouter);
 
@@ -24,39 +24,39 @@ let router = new VueRouter({
       path: "/",
       name: "Login",
       component: Login,
-      beforeEnter: ifNotAuthenticated
+      beforeEnter: ifNotAuthenticated,
     },
     {
       path: "/register",
       name: "Register",
-      component: Register
+      component: Register,
     },
     {
       path: "/users",
       name: "Users",
-      component: Users
+      component: Users,
     },
     {
       path: "/about",
       name: "About",
-      component: About
+      component: About,
     },
     {
       path: "/add-position",
       name: "RegisterPosition",
       component: RegisterPosition,
       meta: {
-        requiresAuth: true
-      }
-    }
-  ]
+        requiresAuth: true,
+      },
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (localStorage.getItem("jwt") == null) {
       next({
-        path: "/users"
+        path: "/users",
       });
     } else {
       next();

@@ -90,7 +90,7 @@
   </div>
 </template>
 <script>
-import Api from "../../services/Api";
+import api from "../../services/api";
 import sweetAlert from "sweetalert";
 import axios from "axios";
 import { mapActions } from "vuex";
@@ -129,7 +129,7 @@ export default {
     async loginUser() {
       this.isLoading = true;
       try {
-        let response = await Api().post("/login", this.login);
+        let response = await api.post("/login", this.login);
         let token = response.data.token;
         localStorage.setItem("jwt", token);
 

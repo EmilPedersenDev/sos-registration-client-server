@@ -120,12 +120,11 @@
 <script>
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
-import Api from "../services/Api";
-import GoogleMap from "./GoogleMap";
+import api from "../../services/api";
+import GoogleMap from "../GoogleMap";
 import moment from "moment";
 moment.locale("en");
 
-import { googleApiKey } from "../common/constants";
 import { mapGetters } from "vuex";
 import {
   required,
@@ -199,7 +198,7 @@ export default {
   },
   methods: {
     submit() {
-      let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.newPersonModel.lat},${this.newPersonModel.long}&key=${googleApiKey}`;
+      let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.newPersonModel.lat},${this.newPersonModel.long}&key=${process.env.VUE_APP_GMAPS_SITE_KEY}`;
       axios
         .get(url)
         .then((result) => {
@@ -221,7 +220,7 @@ export default {
         });
     },
     updateUser() {
-      Api()
+      api
         .put(`/user/${this.user._id}`, this.newPersonModel)
         .then((result) => {
           this.newPersonModel = result.data.user;
@@ -261,60 +260,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.register-position {
-  width: 100%;
-  background: linear-gradient(rgba(255, 255, 255, 0.2)),
-    url("~@/assets/forest1.jpg") no-repeat;
-  background-size: cover;
-  @media (max-width: 768px) {
-    background: #fff;
-  }
-  padding: 10px;
-  z-index: 9998;
-  .location-container {
-    padding: 30px;
-    margin: 60px auto;
-    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.4);
-    border-radius: 20px;
-    background-color: #fff;
-    @media (min-width: 1200px) {
-      max-width: 760px;
-    }
-
-    @media (max-width: 768px) {
-      margin: 20px 0px 30px;
-
-      padding: 30px 10px;
-    }
-
-    h1 {
-      margin-top: 15px;
-      @media (max-width: 768px) {
-        font-size: 30px;
-      }
-    }
-
-    textarea {
-      resize: none;
-    }
-    .row {
-      margin: 20px 0px;
-    }
-    .map {
-      h4 {
-        margin-bottom: 20px;
-        font-weight: 500;
-      }
-    }
-
-    .submit {
-      .row {
-        margin: 35px 0px;
-        button {
-          width: 100%;
-        }
-      }
-    }
-  }
-}
+@import "../styles/register-position.scss";
 </style>

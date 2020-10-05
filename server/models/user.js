@@ -5,42 +5,42 @@ const jwt = require("jsonwebtoken");
 const userSchema = mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please Include your name"]
+    required: [true, "Please Include your name"],
   },
   email: {
     type: String,
-    required: [true, "Please Include your email"]
+    required: [true, "Please Include your email"],
   },
   password: {
     type: String,
-    required: [true, "Please Include your password"]
+    required: [true, "Please Include your password"],
   },
   comment: {
-    type: String
+    type: String,
   },
   lat: {
-    type: Number
+    type: Number,
   },
   long: {
-    type: Number
+    type: Number,
   },
   location: {
-    type: String
+    type: String,
   },
   time: {
-    type: String
+    type: String,
   },
   tokens: [
     {
       token: {
         type: String,
-        required: true
-      }
-    }
-  ]
+        required: true,
+      },
+    },
+  ],
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 8);
@@ -48,11 +48,12 @@ userSchema.pre("save", async function(next) {
   next();
 });
 
-userSchema.methods.generateAuthToken = async function() {
+userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
     { _id: user._id, name: user.name, email: user.email },
-    "secret"
+    "secret",
+    { expiresIn: 15 * 60 }
   );
   user.tokens = user.tokens.concat({ token });
   await user.save();
@@ -73,7 +74,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-userSchema.statics.checkIfExistingUser = async email => {
+userSchema.statics.checkIfExistingUser = async (email) => {
   const user = await User.findOne({ email });
   return user;
 };

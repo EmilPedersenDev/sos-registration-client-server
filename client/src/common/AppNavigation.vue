@@ -119,6 +119,9 @@ export default {
     },
     closeModal() {
       this.showLogoutModal = false;
+      if (!this.authenticated) {
+        this.$router.push("/");
+      }
     },
     logout() {
       this.showLogoutModal = true;

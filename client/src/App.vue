@@ -10,30 +10,32 @@
 <script>
 import VueJwtDecode from "vue-jwt-decode";
 import AppNavigation from "./common/AppNavigation";
+import authService from "./services/authService";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
-    AppNavigation
+    AppNavigation,
   },
   created() {
     if (this.authenticated) {
       this.$store.dispatch("setUser");
     }
+
+    let _this = this;
+    setInterval(() => {
+      if (_this.authenticated && !authService.hasValidToken()) {
+        authService.logout();
+        _this.$router.push("/");
+      }
+    }, 1000 * 60);
   },
   computed: {
     ...mapGetters(["authenticated"]),
     hasBackground() {
       return this.$route.path === "/users";
-    }
+    },
   },
-  watch: {
-    authenticated(token) {
-      if (!token) {
-        this.$router.push("/");
-      }
-    }
-  }
 };
 </script>
 

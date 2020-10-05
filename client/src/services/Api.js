@@ -1,13 +1,7 @@
 import axios from "axios";
 
-export default () => {
-  let url;
-  if (process.env.NODE_ENV === "production") {
-    url = "https://sos-registration.herokuapp.com";
-  } else {
-    url = "http://localhost:8081";
-  }
-  return axios.create({
-    baseURL: url
-  });
-};
+var axiosInstance = axios.create({
+  baseURL: process.env.VUE_APP_API_URL,
+});
+
+export default axiosInstance;

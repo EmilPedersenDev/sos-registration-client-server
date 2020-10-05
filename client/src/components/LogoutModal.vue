@@ -18,25 +18,24 @@
 </template>
 
 <script>
+import authService from "../services/authService";
 export default {
   name: "logout-modal",
   props: {
     close: {
-      type: Function
-    }
+      type: Function,
+    },
   },
   methods: {
     async submit(val) {
       if (!val) {
         this.close(true);
       } else {
-        await localStorage.removeItem("jwt");
-        this.$store.commit("setToken");
-        this.$store.commit("setUser");
+        await authService.logout();
         this.close(true);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

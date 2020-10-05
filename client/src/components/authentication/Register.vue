@@ -113,7 +113,7 @@ import {
   minLength,
   email,
 } from "vuelidate/lib/validators";
-import Api from "../../services/Api";
+import api from "../../services/api";
 import axios from "axios";
 export default {
   data() {
@@ -147,7 +147,7 @@ export default {
     async registerUser() {
       this.isLoading = true;
       try {
-        let response = await Api().post("/register", this.register);
+        let response = await api.post("/register", this.register);
         let token = response.data.token;
         if (token) {
           localStorage.setItem("jwt", token);
