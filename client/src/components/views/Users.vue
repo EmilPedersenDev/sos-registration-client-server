@@ -12,13 +12,14 @@
         <i class="fas fa-search"></i>
         <st-input placeholder="Search for a person" v-model="search"></st-input>
       </div>
-      <div v-if="users.length > 0" class="table-wrap d-none d-md-block">
+      <div v-if="users.length > 0" class="table-wrap">
         <table>
           <thead>
             <th>Name</th>
             <th>Latest Update</th>
             <th>Location</th>
             <th>Message</th>
+            <th>Mapview</th>
             <th align="center">Edit</th>
           </thead>
           <tbody>
@@ -42,19 +43,30 @@
                 >
               </td>
               <td class="comment-info">{{ user.comment }}</td>
+              <td class="userMap">
+                <i
+                  v-if="user.location"
+                  class="fas fa-globe-americas hoverable"
+                  :class="{ 'map-current-user': isCurrentUser(user._id) }"
+                  @click="openMapModal(user._id)"
+                ></i>
+              </td>
               <td>
                 <router-link
                   :to="{ name: 'RegisterPosition' }"
                   v-if="isCurrentUser(user._id)"
                 >
-                  <i class="fas fa-edit"></i>
+                  <i
+                    class="fas fa-edit hoverable"
+                    :class="{ 'map-current-user': isCurrentUser(user._id) }"
+                  ></i>
                 </router-link>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="mobile-table-wrapper d-md-none">
+      <div class="mobile-table-wrapper">
         <div
           class="mobile-item"
           :class="[isCurrentUser(user._id) ? 'current-user' : '']"
@@ -97,6 +109,11 @@
         </div>
       </div>
       <div v-if="!users">There are no users..</div>
+      <map-modal
+        v-if="showMapModal"
+        :close="closeMapModal"
+        :userId="userId"
+      ></map-modal>
     </div>
   </div>
 </template>
@@ -107,20 +124,23 @@ import axios from "axios";
 import api from "../../services/api";
 import { mapGetters } from "vuex";
 import UsersInfoText from "../UsersInfoText";
+import mapModal from "../modals/mapModal";
 
 export default {
   name: "users",
   data() {
     return {
       users: [],
-      userId: null,
+      userId: "",
       search: "",
       isLoading: false,
       innerHeight: 0,
+      showMapModal: false,
     };
   },
   components: {
     UsersInfoText,
+    mapModal,
   },
   created() {
     this.innerHeight = window.innerHeight;
@@ -184,6 +204,13 @@ export default {
     },
     toRegisterPosition() {
       this.$router.push({ name: "RegisterPosition" });
+    },
+    openMapModal(userId) {
+      this.userId = userId;
+      this.showMapModal = true;
+    },
+    closeMapModal() {
+      this.showMapModal = false;
     },
   },
 };

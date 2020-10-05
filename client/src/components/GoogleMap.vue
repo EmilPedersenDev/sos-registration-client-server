@@ -18,11 +18,11 @@
         streetViewControl: false,
         disableDefaultUI: true,
         zoomControl: true,
-        panControl: true
+        panControl: true,
       }"
       :center="center"
       :zoom="12"
-      style="width:100%;  height: 400px;"
+      style="width: 100%; height: 400px"
     >
       <gmap-marker
         :position="marker.position"
@@ -39,19 +39,19 @@ export default {
   name: "google-map",
   props: {
     user: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data() {
     return {
       center: {
         lat: 45.508,
-        lng: -73.587
+        lng: -73.587,
       },
       marker: {},
       places: [],
       currentPlace: null,
-      hasUserLocation: false
+      hasUserLocation: false,
     };
   },
   mounted() {
@@ -61,11 +61,11 @@ export default {
   },
   watch: {
     user: {
-      handler: function(obj) {
+      handler: function (obj) {
         this.geolocate();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     setPlace(place) {
@@ -74,7 +74,7 @@ export default {
     },
     setCenter() {
       if (!this.marker) return;
-      this.$refs.mapRef.$mapPromise.then(map => {
+      this.$refs.mapRef.$mapPromise.then((map) => {
         map.panTo(this.marker.position);
       });
     },
@@ -82,10 +82,11 @@ export default {
       if (this.currentPlace) {
         const marker = {
           lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
+          lng: this.currentPlace.geometry.location.lng(),
         };
         this.marker = Object.assign({ position: marker });
         this.places.push(this.currentPlace);
+        debugger;
         this.center = marker;
         this.currentPlace = null;
         this.$emit("addMarker", this.marker);
@@ -95,22 +96,22 @@ export default {
       if ((this.user.lat && this.user.long) || this.hasUserLocation) {
         this.center = {
           lat: this.user.lat,
-          lng: this.user.long
+          lng: this.user.long,
         };
         this.marker = Object.assign({ position: this.center });
       } else {
-        navigator.geolocation.getCurrentPosition(position => {
+        navigator.geolocation.getCurrentPosition((position) => {
           this.center = {
             lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lng: position.coords.longitude,
           };
 
           this.marker = Object.assign({ position: this.center });
           this.$emit("addMarker", this.marker);
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
