@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row inner-container">
       <div class="col-sm-12 col-md-10 col-lg-7 col-xl-6 register-wrapper">
-        <form @submit.prevent="registerUser">
+        <st-form :submit="registerUser">
           <div class="row">
             <div class="col-12">
               <h3>Register</h3>
@@ -101,7 +101,7 @@
             <span v-if="!isLoading"> Sign in</span>
             <div class="spinner" v-else></div>
           </sos-button>
-        </form>
+        </st-form>
       </div>
     </div>
   </div>
@@ -113,7 +113,7 @@ import {
   minLength,
   email,
 } from "vuelidate/lib/validators";
-import api from "../../services/api";
+import api from "../../../services/api";
 import axios from "axios";
 export default {
   data() {
@@ -194,51 +194,6 @@ input:-webkit-autofill:active {
     .register-wrapper {
       margin: 0 auto;
       padding: 0px 10px;
-
-      form {
-        text-align: center;
-        margin: 50px 0px;
-        height: auto;
-        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
-        border-radius: 20px;
-        padding: 50px;
-        background-color: #fff;
-        @media (max-width: 768px) {
-          margin: 10px 0px 30px;
-          padding: 50px 20px;
-        }
-
-        h3 {
-          margin-bottom: 20px;
-          font-weight: 700;
-          @media (max-width: 768px) {
-            font-size: 22px;
-          }
-        }
-
-        p {
-          margin: 20px 0px;
-          text-align: left;
-        }
-
-        a {
-          color: #699e53;
-          font-weight: 700;
-          transition: all 0.3s ease;
-          &:hover {
-            text-decoration: none;
-            color: #80c565;
-          }
-        }
-
-        .sos-button {
-          margin-top: 10px;
-        }
-
-        input {
-          background-color: #fff;
-        }
-      }
     }
   }
 }

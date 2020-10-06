@@ -45,6 +45,11 @@ export default {};
     }
 
     .about-info {
+      h1 {
+        letter-spacing: 2px;
+        font-size: 2.25rem;
+        font-weight: 600;
+      }
       p {
         text-align: center;
       }

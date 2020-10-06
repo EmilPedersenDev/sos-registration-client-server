@@ -3,8 +3,8 @@ import VueRouter from "vue-router";
 
 import Users from "@/components/views/Users.vue";
 import RegisterPosition from "@/components/views/RegisterPosition";
-import Login from "@/components/authentication/Login";
-import Register from "@/components/authentication/Register";
+import Login from "@/components/views/authentication/Login";
+import Register from "@/components/views/authentication/Register";
 import About from "@/components/views/About.vue";
 
 Vue.use(VueRouter);

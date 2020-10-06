@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row inner-container">
       <div class="col-sm-12 col-md-10 col-lg-7 col-xl-6 login-wrapper">
-        <form @submit.prevent="loginUser">
+        <st-form :submit="loginUser">
           <div class="row">
             <div class="col-12">
               <h3>Login to register location</h3>
@@ -84,13 +84,13 @@
             <span v-if="!isLoading"> Sign in</span>
             <div class="spinner" v-else></div>
           </sos-button>
-        </form>
+        </st-form>
       </div>
     </div>
   </div>
 </template>
 <script>
-import api from "../../services/api";
+import api from "../../../services/api";
 import sweetAlert from "sweetalert";
 import axios from "axios";
 import { mapActions } from "vuex";
@@ -163,67 +163,24 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
 }
 
 .container {
   .inner-container {
     margin: 0px;
-
     .login-wrapper {
       margin: 0 auto;
       padding: 0px 10px;
       form {
-        text-align: center;
-        margin: 50px 0px;
-        height: auto;
-        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.6);
-        border-radius: 20px;
-        padding: 50px;
-        background-color: #fff;
-        @media (max-width: 768px) {
-          margin: 10px 0px 30px;
-          padding: 50px 20px;
-        }
-        h3 {
-          margin-bottom: 20px;
-          font-weight: 700;
-          @media (max-width: 768px) {
-            font-size: 22px;
-          }
-        }
-
-        a {
-          color: #699e53;
-          font-weight: 700;
-          transition: all 0.3s ease;
-          &:hover {
-            text-decoration: none;
-            color: #80c565;
-          }
-        }
-
         .login-information {
           p {
             text-align: center;
             margin-bottom: 25px;
           }
         }
-
-        p {
-          margin: 20px 0px;
-          text-align: left;
-        }
-
-        .sos-button {
-          margin-top: 10px;
-        }
-
         .email-container {
           margin-bottom: 20px;
-        }
-        input {
-          background-color: #fff;
         }
       }
     }

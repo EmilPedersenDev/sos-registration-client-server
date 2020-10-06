@@ -12,98 +12,13 @@
         <i class="fas fa-search"></i>
         <st-input placeholder="Search for a person" v-model="search"></st-input>
       </div>
-      <div v-if="users.length > 0" class="table-wrap">
-        <table>
-          <thead>
-            <th>Name</th>
-            <th>Latest Update</th>
-            <th>Location</th>
-            <th>Message</th>
-            <th>Mapview</th>
-            <th align="center">Edit</th>
-          </thead>
-          <tbody>
-            <tr
-              v-for="user in filteredUsers"
-              :key="user._id"
-              :class="[isCurrentUser(user._id) ? 'current-user' : 'other-user']"
-            >
-              <td>
-                <span>{{ user.name }}</span>
-              </td>
-              <td>{{ user.time }}</td>
-              <td v-if="user.location">{{ user.location.slice(7) }}</td>
-              <td v-else>
-                <span v-if="user.lat || user.long"
-                  >Latitude: {{ user.lat }}, Longitude: {{ user.long }}</span
-                >
-              </td>
-              <td class="comment-info">{{ user.comment }}</td>
-              <td class="userMap">
-                <i
-                  v-if="user.location"
-                  class="fas fa-globe-americas hoverable"
-                  :class="{ 'map-current-user': isCurrentUser(user._id) }"
-                  @click="openMapModal(user._id)"
-                ></i>
-              </td>
-              <td>
-                <router-link
-                  :to="{ name: 'RegisterPosition' }"
-                  v-if="isCurrentUser(user._id)"
-                >
-                  <i
-                    class="fas fa-edit hoverable"
-                    :class="{ 'map-current-user': isCurrentUser(user._id) }"
-                  ></i>
-                </router-link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="mobile-table-wrapper">
-        <div
-          class="mobile-item"
-          :class="[isCurrentUser(user._id) ? 'current-user' : '']"
-          v-for="user in filteredUsers"
-          :key="user._id"
-        >
-          <div class="row" style="margin: 0">
-            <div class="col-4">
-              <p>Name:</p>
-            </div>
-            <div class="col-8">
-              <p>{{ user.name }}</p>
-            </div>
-            <div class="col-4">
-              <p>Update:</p>
-            </div>
-            <div class="col-8">
-              <p>{{ user.time }}</p>
-            </div>
-            <div class="col-4">
-              <p>Location:</p>
-            </div>
-            <div class="col-8">
-              <p v-if="user.location">{{ user.location.slice(7) }}</p>
-            </div>
-            <div class="col-4">
-              <p>Message:</p>
-            </div>
-            <div class="col-8 comment-info">
-              <p>{{ user.comment }}</p>
-            </div>
-            <sos-button
-              v-if="isCurrentUser(user._id)"
-              class="col-10"
-              primary
-              @click="toRegisterPosition"
-              >Edit</sos-button
-            >
-          </div>
-        </div>
-      </div>
+      <users-table
+        v-if="users.length > 0"
+        :tableHeaders="tableHeaders"
+        :users="users"
+        :searchQuery="search"
+        :openModal="openMapModal"
+      ></users-table>
       <div v-if="!users">There are no users..</div>
       <map-modal
         v-if="showMapModal"
@@ -115,12 +30,10 @@
 </template>
 
 <script>
-import VueJwtDecode from "vue-jwt-decode";
-import axios from "axios";
 import api from "../../services/api";
-import { mapGetters } from "vuex";
 import UsersInfoText from "../UsersInfoText";
-import mapModal from "../modals/mapModal";
+import MapModal from "../modals/mapModal";
+import UsersTable from "../UsersTable";
 
 export default {
   name: "users",
@@ -132,49 +45,24 @@ export default {
       isLoading: false,
       innerHeight: 0,
       showMapModal: false,
+      tableHeaders: [
+        "Name",
+        "Latest Update",
+        "Location",
+        "Message",
+        "Mapview",
+        "Edit",
+      ],
     };
   },
   components: {
     UsersInfoText,
-    mapModal,
+    MapModal,
+    UsersTable,
   },
   created() {
     this.innerHeight = window.innerHeight;
     this.getUsers();
-  },
-
-  computed: {
-    ...mapGetters({ auth: "authenticated", userState: "getUser" }),
-    filteredUsers() {
-      let usersFilterArr = this.users;
-      if (!this.search && this.userState) {
-        usersFilterArr.sort((a, b) => {
-          if (a._id === this.userState._id) {
-            return -1;
-          } else if (b._id === this.userState._id) {
-            return 1;
-          } else if (a.name.toLowerCase() > b.name.toLowerCase()) {
-            return 1;
-          } else {
-            return -1;
-          }
-        });
-      }
-
-      usersFilterArr = usersFilterArr.filter((val) => {
-        for (let key in val) {
-          if (
-            val[key]
-              .toString()
-              .toLowerCase()
-              .indexOf(this.search.toString().toLowerCase()) > -1
-          ) {
-            return val;
-          }
-        }
-      });
-      return usersFilterArr;
-    },
   },
   methods: {
     getUsers() {
@@ -191,16 +79,6 @@ export default {
           this.isLoading = false;
         });
     },
-    isCurrentUser(id) {
-      if (!id) return false;
-      if (!this.auth) return false;
-
-      let decodedToken = VueJwtDecode.decode(this.auth);
-      return decodedToken._id === id;
-    },
-    toRegisterPosition() {
-      this.$router.push({ name: "RegisterPosition" });
-    },
     openMapModal(userId) {
       this.userId = userId;
       this.showMapModal = true;
@@ -213,5 +91,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/users.scss";
+.Users {
+  h1 {
+    margin-bottom: 30px;
+    font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 30px;
+    }
+  }
+  .search-wrapper {
+    margin: 0 auto;
+    .fa-search {
+      left: 30px;
+      top: 15px;
+      position: absolute;
+    }
+    input {
+      padding-left: 40px;
+    }
+  }
+}
 </style>
