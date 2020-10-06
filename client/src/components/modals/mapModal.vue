@@ -119,7 +119,7 @@ export default {
 
     .fas {
       top: 2px;
-      right: 9px;
+      right: 9.5px;
       font-size: 1.75em;
       z-index: 999;
       color: #343a40;

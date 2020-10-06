@@ -86,7 +86,6 @@ export default {
         };
         this.marker = Object.assign({ position: marker });
         this.places.push(this.currentPlace);
-        debugger;
         this.center = marker;
         this.currentPlace = null;
         this.$emit("addMarker", this.marker);

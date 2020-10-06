@@ -1,24 +1,5 @@
-.Users {
-  h1 {
-    margin-bottom: 30px;
-    font-weight: 700;
-
-    @media (max-width: 768px) {
-      font-size: 30px;
-    }
-  }
-  .search-wrapper {
-    margin: 0 auto;
-    .fa-search {
-      left: 30px;
-      top: 15px;
-      position: absolute;
-    }
-    input {
-      padding-left: 40px;
-    }
-  }
-  .table-wrap {
+.users-table {
+  .users-table-desktop {
     @media (min-width: 916px) {
       display: block;
     }
@@ -112,7 +93,7 @@
           }
 
           &:nth-child(odd) {
-            background: #eeeeee;
+            background: #f9f8f5;
           }
           td {
             padding: 10px;
@@ -150,7 +131,7 @@
     }
   }
 
-  .mobile-table-wrapper {
+  .users-table-mobile {
     @media (max-width: 916px) {
       display: block;
     }
@@ -158,12 +139,15 @@
     margin-top: 40px;
     .mobile-item {
       &.current-user {
-        background: #c8e6c9 !important;
+        background: #80c565 !important;
+        p {
+          color: #fff;
+        }
       }
       margin: 0px;
       background-color: #fff;
       &:nth-child(odd) {
-        background: #e5e5e5;
+        background: #f9f8f5;
       }
       .col-8 {
         text-align: left;
@@ -177,9 +161,33 @@
       }
       p {
         margin: 10px 0px;
+        &.header {
+          font-weight: 700;
+          text-align: initial;
+        }
       }
       button {
-        margin: 10px auto 20px auto;
+        margin: 10px auto 0px auto;
+        border-width: 2px;
+
+        &.edit-button-mobile {
+          @media (min-width: 576px) {
+            width: 115px;
+            float: left;
+          }
+          margin-bottom: 15px;
+          width: 100%;
+        }
+
+        &.map-not-current-user {
+          margin-bottom: 15px;
+        }
+      }
+
+      .col-sm-8 {
+        &.edit-button-wrapper {
+          margin: 0 0 0 auto;
+        }
       }
     }
   }
