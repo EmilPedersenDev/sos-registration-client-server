@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ background: hasBackground }">
+  <div id="app" :class="{ 'no-background': hasNoBackground }">
     <app-navigation></app-navigation>
     <transition name="fade" mode="out-in">
       <router-view />
@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     ...mapGetters(["authenticated"]),
-    hasBackground() {
+    hasNoBackground() {
       return this.$route.path === "/users";
     },
   },
@@ -59,7 +59,7 @@ html {
     background: #fff;
   }
 
-  &.background {
+  &.no-background {
     background: #fff;
   }
 }

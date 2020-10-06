@@ -32,6 +32,16 @@
       <sos-button v-else class="no-mobile-view" secondary medium @click="login"
         >Login</sos-button
       >
+      <ul class="social-link-wrapper">
+        <li class="no-mobile-view social-link">
+          <a
+            href="https://github.com/EmilPedersenDev/sos-registration-client-server"
+            target="_blank"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+        </li>
+      </ul>
     </div>
     <div
       :style="menuHeight"
@@ -67,6 +77,14 @@
             @click="login"
             >Login</sos-button
           >
+        </li>
+        <li @click="toggle">
+          <a
+            href="https://github.com/EmilPedersenDev/sos-registration-client-server"
+            target="_blank"
+          >
+            <i class="fab fa-github"></i>
+          </a>
         </li>
       </ul>
     </div>
@@ -242,6 +260,15 @@ export default {
           a {
             font-size: 14px;
           }
+        }
+      }
+    }
+
+    .social-link-wrapper {
+      .social-link {
+        margin-left: 30px;
+        .fab {
+          font-size: 1.25rem;
         }
       }
     }
